@@ -22,7 +22,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ApiKeys" asp-action="YoutubeIndex">Video</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="YoutubeIndex">Video</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PostUpdates" asp-action="Create">Create</a>
@@ -42,16 +42,8 @@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
-            <p>Youtube Api</p>
-            @*@foreach (var item in Model.items)
-            {
-                <img src="@item.snippet.thumbnails.medium.url" />
-                <p><a href="https://www.youtube.com/watch/@item.id.videoId">@item.snippet.title"</a></p>
-
-            }*@
         </main>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - TrainingModule - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
