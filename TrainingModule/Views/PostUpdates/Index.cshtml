@@ -1,0 +1,66 @@
+﻿@model IEnumerable<TrainingModule.Models.PostUpdate>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Daily)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DailyContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DailyCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Weekly)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WeeklyContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WeeklyCreated)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Daily)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DailyContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DailyCreated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Weekly)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeeklyContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeeklyCreated)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PostUpdateId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PostUpdateId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PostUpdateId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

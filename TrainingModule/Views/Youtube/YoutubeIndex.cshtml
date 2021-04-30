@@ -1,0 +1,12 @@
+﻿@model TrainingModule.Models.Youtube
+@{
+    ViewData["Title"] = "Youtube Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p>Youtube Api</p>
+@foreach (var item in Model.items)
+{
+    <img src="@item.snippet.thumbnails.medium.url" />
+    <p><a href="https://www.youtube.com/watch/@item.id.videoId">@item.snippet.title"</a></p>
+
+}

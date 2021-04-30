@@ -1,0 +1,60 @@
+﻿@model TrainingModule.Models.PostUpdate
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Edit</h1>
+
+<h4>PostUpdate</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PostUpdateId" />
+            <div class="form-group">
+                <label asp-for="Daily" class="control-label"></label>
+                <input asp-for="Daily" class="form-control" />
+                <span asp-validation-for="Daily" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DailyContent" class="control-label"></label>
+                <input asp-for="DailyContent" class="form-control" />
+                <span asp-validation-for="DailyContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DailyCreated" class="control-label"></label>
+                <input asp-for="DailyCreated" class="form-control" />
+                <span asp-validation-for="DailyCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Weekly" class="control-label"></label>
+                <input asp-for="Weekly" class="form-control" />
+                <span asp-validation-for="Weekly" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeeklyContent" class="control-label"></label>
+                <input asp-for="WeeklyContent" class="form-control" />
+                <span asp-validation-for="WeeklyContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WeeklyCreated" class="control-label"></label>
+                <input asp-for="WeeklyCreated" class="form-control" />
+                <span asp-validation-for="WeeklyCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
