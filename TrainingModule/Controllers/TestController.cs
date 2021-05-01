@@ -13,11 +13,11 @@ using TrainingModule.Models;
 namespace TrainingModule.Controllers
 {
     //[Authorize(Roles = "Manager")]
-    public class PostUpdatesController : Controller
+    public class TestController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PostUpdatesController(ApplicationDbContext context)
+        public TestController(ApplicationDbContext context)
         {
             _context = context;
         }

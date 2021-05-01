@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Training\**" />
+    <Content Remove="Views\Training\**" />
+    <EmbeddedResource Remove="Views\Training\**" />
+    <None Remove="Views\Training\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.51.0.2294" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
@@ -25,7 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Training\" />
+    <Folder Include="Views\PostUpdates\" />
     <Folder Include="wwwroot\content\blog\" />
     <Folder Include="wwwroot\content\video\" />
     <Folder Include="wwwroot\content\static\" />

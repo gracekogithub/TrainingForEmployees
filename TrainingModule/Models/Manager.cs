@@ -13,12 +13,12 @@ namespace TrainingModule.Models
         public int ManagerId { get; set; }
         public string ManagerName { get; set; }
         public ICollection<Feedback> Feedback { get; set; }
+        public ICollection<PostUpdate> PostUpdate { get; set; }
+        public ICollection<Training> Training { get; set; }
         [ForeignKey("IdentityUser")]
         [Display(Name = "Manager")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-        [ForeignKey("Training")]
-        public int TrainingId { get; set; }
-        public Training Training { get; set; }
+       
     }
 }
