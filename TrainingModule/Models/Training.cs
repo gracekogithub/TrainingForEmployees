@@ -11,7 +11,8 @@ namespace TrainingModule.Models
         public int TrainingId { get; set; }
         public string Title { get; set; }
         public string Body { get; set; }
-        public IFormFile Video { get; set; }
+        public List<IFormFile> Materials { get; set; }
+        public string Department { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.Now;
     }
 }

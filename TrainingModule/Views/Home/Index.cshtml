@@ -7,16 +7,16 @@
     <h1 class="display-4">Welcome to Team Boards!</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
-<div>
+@*<div class="col-sm-10">
     <p>File Upload testing page</p>
-    <form asp-controller="Home" asp-action="Upload" enctype="multipart/form-data" method="post">
-        <imput type="file" name="file" />
-        <button type="submit">Submit</button>
-    </form>
-</div>
-@*@foreach (var item in Model.items)
-    {
-        <img src="@item.snippet.thumbnails.medium.url" />
-        <p><a href="https://www.youtube.com/watch/@item.id.videoId">@item.snippet.title"</a></p>
+    <div class="custom-file">
+        <input multiple asp-for="Materials" class="form-control custom-file-input" />
 
-    }*@
+        
+    </div>*@
+   
+@*</div>*@
+<form asp-controller="Home" asp-action="Upload" enctype="multipart/form-data" method="post">
+    <imput type="file" name="file" />
+    <button type="submit">Submit</button>
+</form>

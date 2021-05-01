@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TrainingModule.ActionFilters;
+using TrainingModule.Data;
 using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
@@ -17,6 +18,13 @@ namespace TrainingModule.Controllers
     
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _context;
+    
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return View();
@@ -36,7 +44,26 @@ namespace TrainingModule.Controllers
         }
         public IActionResult Upload(IFormFile file)
         {
+            
             return RedirectToAction(nameof(Index));
         }
+        [HttpGet]
+        public IActionResult AddFeedback()
+        {
+            Feedback feedback = new Feedback();
+            return View(feedback);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddFeedback(Feedback feedback)
+        {
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Success");
+
+            }
+            return View(feedback);
+        }
+       
     }
 }

@@ -9,7 +9,10 @@ namespace TrainingModule.Models
     public class Feedback
     {
         public int FeedbackId { get; set; }
+        
         public string FeedbackContent { get; set; }
+        public string FeedbackTitle { get; set; }
+
         
 
         
