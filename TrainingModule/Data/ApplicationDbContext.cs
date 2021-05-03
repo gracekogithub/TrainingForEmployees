@@ -20,12 +20,13 @@ namespace TrainingModule.Data
         public DbSet<PostUpdate> PostUpdates { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<Reply> Replies { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(builder);
-            builder.Entity<IdentityRole>()
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<IdentityRole>()
                 .HasData(
                 new IdentityRole
                 {
@@ -37,12 +38,10 @@ namespace TrainingModule.Data
                     Name = "Employee",
                     NormalizedName = "Employee"
                 });
-            //base.OnModelCreating(builder);
-            //builder.Entity<PostUpdate>()
-            // .HasData(
-            //    new PostUpdate { PostUpdateId = 1, Daily = "Reminder", DailyContent = "We have a Cap inspection", DailyCreated = DateTime.Now },
-            //    new PostUpdate { PostUpdateId = 2, Weekly = "Weekly Hightlight", WeeklyContent = "Will be posted", WeeklyCreated = DateTime.Now }
-            //    );
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Comment>()
+             .HasKey(fe => new { fe.EmployeeId, fe.ManagerId });
+                
         }
     }
 }

@@ -12,15 +12,15 @@ namespace TrainingModule.Models
     {
         [Key]
         public int ReplyId { get; set; }
-        [Required]
+        [Required]    
         public string ReplyContent { get; set; }
         [ScaffoldColumn(false)]
         public DateTime? Created { get; set; }
-        [ForeignKey("FeedbackId")]
-        public int FeedbackId { get; set; }
-        public virtual Feedback Feedback { get; set; }
+        public Feedback Feedback { get; set; }
+  
         [ForeignKey("IdentityUserId")]
         public string IdentityUserId { get; set; }
         public virtual IdentityUser IdentityUser { get; set; }
+       
     }
 }

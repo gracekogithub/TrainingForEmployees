@@ -10,9 +10,11 @@ using TrainingModule.Models;
 using TrainingModule.ViewModels;
 using Microsoft.AspNetCore.Session;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TrainingModule.Controllers
 {
+    //[Authorize(Roles="Employee, Manager")]
     public class FeedbacksController : Controller
     {
         private ApplicationDbContext _context;
@@ -44,31 +46,10 @@ namespace TrainingModule.Controllers
         {
             return View();
         }
-        
-        // POST: FeedbacksController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult PostReply(Feedback feedback, ReplyVM reply)
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            feedback.IdentityUserId = userId;
-            _context.Feedbacks.Add(feedback);
-            _context.SaveChanges();
-           
 
-            Reply item = new Reply();
-            item.ReplyContent = reply.Reply;
-            item.FeedbackId = reply.CommentId;
-            _context.Replies.Add(item);
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(Index));
-        }
-        public IActionResult Delete(int? id)
+       
+       
+        public ActionResult Delete(int? id)
         {
             var feedback = _context.Feedbacks.Where(e => e.FeedbackId == id).FirstOrDefault();
             return View(feedback);
@@ -77,7 +58,7 @@ namespace TrainingModule.Controllers
         // POST: Employees/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, Feedback feedback)
+        public ActionResult Delete(int id, Feedback feedback)
         {
             try
             {
@@ -119,7 +100,7 @@ namespace TrainingModule.Controllers
         // POST: Customers/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Feedback feedback)
+        public ActionResult Edit(int id, Feedback feedback)
         {
             try
             {

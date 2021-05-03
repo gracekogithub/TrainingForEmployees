@@ -12,15 +12,19 @@ namespace TrainingModule.Models
     {
         [Key]
         public int FeedbackId { get; set; }
+        public string UserName { get; set; }
         [Required]
-        
         public string FeedbackContent { get; set; }
         [ScaffoldColumn(false)]
         public DateTime? Created { get; set; }
-        public ICollection<Reply>Reply { get; set; }
-
+         
+  
         [ForeignKey("IdentityUserId")]
         public string IdentityUserId { get; set; }
         public virtual IdentityUser IdentityUser { get; set; }
+        [ForeignKey("Reply")]
+        public int ReplyId { get; set; }
+        public Reply Reply { get; set; }
+       
     }
 }

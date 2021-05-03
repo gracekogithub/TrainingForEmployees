@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingModule.Data;
 
 namespace TrainingModule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210503134451_addedreply")]
-    partial class addedreply
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,15 +48,15 @@ namespace TrainingModule.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "203d3654-fde2-4964-9bee-a4b154a98001",
-                            ConcurrencyStamp = "26398fa3-fe75-4cd9-a456-aea70584921b",
+                            Id = "3aad58c4-8501-4218-8b13-dd805c36653b",
+                            ConcurrencyStamp = "0c555c23-d3e8-459c-81f8-b49b7ac2812b",
                             Name = "Manager",
                             NormalizedName = "Manager"
                         },
                         new
                         {
-                            Id = "9bd460fe-6bc7-4ace-b906-fada684e6fbd",
-                            ConcurrencyStamp = "382c1e5f-ab5b-4660-b5e6-9bd008a6a4cd",
+                            Id = "3b48de39-fc00-4e9c-8e0f-92149f82ced1",
+                            ConcurrencyStamp = "d59b58d6-281b-4120-9753-27a626f21378",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -276,6 +274,9 @@ namespace TrainingModule.Migrations
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ReplyId")
+                        .HasColumnType("int");
+
                     b.HasKey("FeedbackId");
 
                     b.HasIndex("EmployeeId");
@@ -350,7 +351,7 @@ namespace TrainingModule.Migrations
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FeedbackId")
+                    b.Property<int?>("FeedbackId")
                         .HasColumnType("int");
 
                     b.Property<string>("IdentityUserId")
@@ -498,17 +499,13 @@ namespace TrainingModule.Migrations
 
             modelBuilder.Entity("TrainingModule.Models.Reply", b =>
                 {
-                    b.HasOne("TrainingModule.Models.Feedback", "Feedback")
+                    b.HasOne("TrainingModule.Models.Feedback", null)
                         .WithMany("Reply")
-                        .HasForeignKey("FeedbackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FeedbackId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
-
-                    b.Navigation("Feedback");
 
                     b.Navigation("IdentityUser");
                 });

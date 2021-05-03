@@ -8,17 +8,12 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class Manager
+    public class Comment
     {
+        public int EmployeeId { get; set; }
         public int ManagerId { get; set; }
-        public string ManagerName { get; set; }
-        public ICollection<Comment> Comment { get; set; }
-       
+        public Employee Employee { get; set; }
+        public Manager Manager { get; set; }
 
-        [ForeignKey("IdentityUser")]
-        [Display(Name = "Manager")]
-        public string IdentityUserId { get; set; }
-        public IdentityUser IdentityUser { get; set; }
-       
     }
 }

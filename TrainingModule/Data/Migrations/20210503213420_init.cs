@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TrainingModule.Migrations
 {
-    public partial class addedreply : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -201,6 +201,7 @@ namespace TrainingModule.Migrations
                     FeedbackContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReplyId = table.Column<int>(type: "int", nullable: false),
                     EmployeeId = table.Column<int>(type: "int", nullable: true),
                     ManagerId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -286,8 +287,8 @@ namespace TrainingModule.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ReplyContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    FeedbackId = table.Column<int>(type: "int", nullable: false),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    FeedbackId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -303,18 +304,18 @@ namespace TrainingModule.Migrations
                         column: x => x.FeedbackId,
                         principalTable: "Feedbacks",
                         principalColumn: "FeedbackId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "203d3654-fde2-4964-9bee-a4b154a98001", "26398fa3-fe75-4cd9-a456-aea70584921b", "Manager", "Manager" });
+                values: new object[] { "3aad58c4-8501-4218-8b13-dd805c36653b", "0c555c23-d3e8-459c-81f8-b49b7ac2812b", "Manager", "Manager" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9bd460fe-6bc7-4ace-b906-fada684e6fbd", "382c1e5f-ab5b-4660-b5e6-9bd008a6a4cd", "Employee", "Employee" });
+                values: new object[] { "3b48de39-fc00-4e9c-8e0f-92149f82ced1", "d59b58d6-281b-4120-9753-27a626f21378", "Employee", "Employee" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
