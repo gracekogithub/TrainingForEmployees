@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
@@ -12,27 +14,27 @@ using System.Threading.Tasks;
 using TrainingModule.ActionFilters;
 using TrainingModule.Data;
 using TrainingModule.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace TrainingModule.Controllers
 {
-    
+
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
-    
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger)
         {
-            _context = context;
+            _logger = logger;
         }
         public IActionResult Index()
         {
+            //HttpContext.Session.SetString("IndentityUser", "");
             return View();
         }
         public IActionResult YoutubeIndex()
         {
             WebRequest request = WebRequest.Create("https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q=hematology&key=" + YoutubeApiKeys.apiKey);
-            //request.Headers.Add("Authorization Basic: ") + secretKey);
             WebResponse response = request.GetResponse();
             Stream stream = response.GetResponseStream();
             StreamReader reader = new StreamReader(stream);
@@ -44,7 +46,7 @@ namespace TrainingModule.Controllers
         }
         public IActionResult Upload(IFormFile file)
         {
-            
+
             return RedirectToAction(nameof(Index));
         }
         [HttpGet]
@@ -64,6 +66,5 @@ namespace TrainingModule.Controllers
             }
             return View(feedback);
         }
-       
     }
 }

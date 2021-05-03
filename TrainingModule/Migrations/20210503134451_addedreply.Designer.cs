@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingModule.Data;
 
-namespace TrainingModule.Data.Migrations
+namespace TrainingModule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210503134451_addedreply")]
+    partial class addedreply
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrainingModule.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b27bf99d-56de-4b20-985d-556e2e566511",
-                            ConcurrencyStamp = "4a332f22-4e3b-455a-9542-5215ef7fe65a",
+                            Id = "203d3654-fde2-4964-9bee-a4b154a98001",
+                            ConcurrencyStamp = "26398fa3-fe75-4cd9-a456-aea70584921b",
                             Name = "Manager",
                             NormalizedName = "Manager"
                         },
                         new
                         {
-                            Id = "8201ef27-5f50-40b5-8b15-f094d7140779",
-                            ConcurrencyStamp = "01d0a653-818e-4a39-96f2-146dc9f64b0b",
+                            Id = "9bd460fe-6bc7-4ace-b906-fada684e6fbd",
+                            ConcurrencyStamp = "382c1e5f-ab5b-4660-b5e6-9bd008a6a4cd",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -241,7 +243,12 @@ namespace TrainingModule.Data.Migrations
                     b.Property<string>("EmployeeName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("EmployeeId");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Employees");
                 });
@@ -253,11 +260,18 @@ namespace TrainingModule.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("EmployeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("FeedbackContent")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
@@ -265,6 +279,8 @@ namespace TrainingModule.Data.Migrations
                     b.HasKey("FeedbackId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("IdentityUserId");
 
                     b.HasIndex("ManagerId");
 
@@ -298,30 +314,59 @@ namespace TrainingModule.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Daily")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("DailyContent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DailyCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int?>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PostContent")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Weekly")
+                    b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WeeklyContent")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("WeeklyCreated")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("PostUpdateId");
 
+                    b.HasIndex("IdentityUserId");
+
+                    b.HasIndex("ManagerId");
+
                     b.ToTable("PostUpdates");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.Reply", b =>
+                {
+                    b.Property<int>("ReplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FeedbackId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ReplyContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReplyId");
+
+                    b.HasIndex("FeedbackId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Replies");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Training", b =>
@@ -332,18 +377,22 @@ namespace TrainingModule.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Body")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Video")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("manager")
+                        .HasColumnType("int");
 
                     b.HasKey("TrainingId");
+
+                    b.HasIndex("manager");
 
                     b.ToTable("Trainings");
                 });
@@ -399,19 +448,30 @@ namespace TrainingModule.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TrainingModule.Models.Employee", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
+                });
+
             modelBuilder.Entity("TrainingModule.Models.Feedback", b =>
                 {
-                    b.HasOne("TrainingModule.Models.Employee", "employee")
+                    b.HasOne("TrainingModule.Models.Employee", null)
                         .WithMany("Feedback")
                         .HasForeignKey("EmployeeId");
 
-                    b.HasOne("TrainingModule.Models.Manager", "manager")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("TrainingModule.Models.Manager", null)
                         .WithMany("Feedback")
                         .HasForeignKey("ManagerId");
 
-                    b.Navigation("employee");
-
-                    b.Navigation("manager");
+                    b.Navigation("IdentityUser");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Manager", b =>
@@ -423,14 +483,62 @@ namespace TrainingModule.Data.Migrations
                     b.Navigation("IdentityUser");
                 });
 
+            modelBuilder.Entity("TrainingModule.Models.PostUpdate", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.HasOne("TrainingModule.Models.Manager", null)
+                        .WithMany("PostUpdate")
+                        .HasForeignKey("ManagerId");
+
+                    b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.Reply", b =>
+                {
+                    b.HasOne("TrainingModule.Models.Feedback", "Feedback")
+                        .WithMany("Reply")
+                        .HasForeignKey("FeedbackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("Feedback");
+
+                    b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.Training", b =>
+                {
+                    b.HasOne("TrainingModule.Models.Manager", "Manager")
+                        .WithMany("Training")
+                        .HasForeignKey("manager");
+
+                    b.Navigation("Manager");
+                });
+
             modelBuilder.Entity("TrainingModule.Models.Employee", b =>
                 {
                     b.Navigation("Feedback");
                 });
 
+            modelBuilder.Entity("TrainingModule.Models.Feedback", b =>
+                {
+                    b.Navigation("Reply");
+                });
+
             modelBuilder.Entity("TrainingModule.Models.Manager", b =>
                 {
                     b.Navigation("Feedback");
+
+                    b.Navigation("PostUpdate");
+
+                    b.Navigation("Training");
                 });
 #pragma warning restore 612, 618
         }

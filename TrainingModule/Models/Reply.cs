@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class PostUpdate
+    public class Reply
     {
         [Key]
-        public int PostUpdateId { get; set; }
+        public int ReplyId { get; set; }
         [Required]
-        public string Title { get; set; }
-        [Required]
-        public string PostContent { get; set; } 
-        [Required]
-        public DateTime DateCreated { get; set; }
-
+        public string ReplyContent { get; set; }
+        [ScaffoldColumn(false)]
+        public DateTime? Created { get; set; }
+        [ForeignKey("FeedbackId")]
+        public int FeedbackId { get; set; }
+        public virtual Feedback Feedback { get; set; }
         [ForeignKey("IdentityUserId")]
         public string IdentityUserId { get; set; }
         public virtual IdentityUser IdentityUser { get; set; }

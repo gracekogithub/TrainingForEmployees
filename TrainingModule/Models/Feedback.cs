@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,15 +12,15 @@ namespace TrainingModule.Models
     {
         [Key]
         public int FeedbackId { get; set; }
+        [Required]
         
         public string FeedbackContent { get; set; }
-        public string FeedbackTitle { get; set; }
+        [ScaffoldColumn(false)]
+        public DateTime? Created { get; set; }
+        public ICollection<Reply>Reply { get; set; }
 
-
-        [ForeignKey("Manager")]
-
-        public Manager Manager { get; set; }
-        [ForeignKey("Employee")]
-        public Employee Employee { get; set; }
+        [ForeignKey("IdentityUserId")]
+        public string IdentityUserId { get; set; }
+        public virtual IdentityUser IdentityUser { get; set; }
     }
 }

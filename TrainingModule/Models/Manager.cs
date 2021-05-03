@@ -15,6 +15,7 @@ namespace TrainingModule.Models
         public ICollection<Feedback> Feedback { get; set; }
         public ICollection<PostUpdate> PostUpdate { get; set; }
         public ICollection<Training> Training { get; set; }
+
         [ForeignKey("IdentityUser")]
         [Display(Name = "Manager")]
         public string IdentityUserId { get; set; }

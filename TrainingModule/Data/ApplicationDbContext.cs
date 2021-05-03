@@ -19,6 +19,9 @@ namespace TrainingModule.Data
         public DbSet<Manager> Managers { get; set; }
         public DbSet<PostUpdate> PostUpdates { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Reply> Replies { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -12,11 +12,13 @@ namespace TrainingModule.Models
     {
         [Key]
         public int TrainingId { get; set; }
+        [Required]
         public string Title { get; set; }
+        [Required]
         public string Body { get; set; }
-
-        public string Department { get; set; }
+        [Required]
         public DateTime DateCreated { get; set; }
+
         [ForeignKey("manager")]
         public Manager Manager { get; set; }
     }

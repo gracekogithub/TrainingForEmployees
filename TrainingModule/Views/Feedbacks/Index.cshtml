@@ -1,0 +1,56 @@
+﻿@model IEnumerable<TrainingModule.Models.Feedback>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<p>
+    <a asp-action="Create" type="submit" value="Create" class="btn btn-primary" >Create New</a>|
+    <a asp-controller="Home" asp-action="Index">Back to Home Page</a>
+</p>
+<h1 class="text-success text-center">Your feedback is important!</h1>
+
+<table class="table">
+
+    @foreach (var feedback in Model)
+    {
+    <tr>
+        <td>
+            <span style="margin-right:15px; font-size:15px; color:cadetblue">
+                @feedback.IdentityUserId
+            </span>
+            <span style="font-size:20px">
+                @Html.DisplayFor(modelItem => feedback.FeedbackContent)
+            </span>
+            <span style="margin-left:15px; font-size:10px; color:dimgray">
+                @feedback.Created
+            </span>
+            @foreach (var reply in feedback.Reply)
+            {
+                <br />
+                <span style="margin-right:15px; font-size:15px; color:cadetblue">
+                    @reply.IdentityUserId
+                </span>
+                <span style="font-size:20px">
+                    @reply.ReplyContent
+                </span>
+                <span style="margin-left:15px; font-size:10px; color:dimgray">
+                    @reply.Created
+                </span>
+            }
+            <br />
+            @using (Html.BeginForm("PostReply", "Feedbacks", FormMethod.Post))
+            {
+                <input type="text" name="Reply" style="width:100%; font-size:20px; margin-top:10px" />
+                <br />
+                <input type="hidden" name="CommentId" value="@feedback.FeedbackId" />
+                <input type="submit" value="Post Reply" class="btn btn-success" style="margin-top:10px" />
+            }
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@feedback.FeedbackId">Edit</a> |
+            <a asp-action="Delete" asp-route-id="@feedback.FeedbackId">Delete</a>
+        </td>
+    </tr>
+    }
+</table>
+
