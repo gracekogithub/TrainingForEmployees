@@ -13,10 +13,10 @@ namespace TrainingModule.Models
         [Key]
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
-        public ICollection<Comment> Comment { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 }

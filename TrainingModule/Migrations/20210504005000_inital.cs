@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TrainingModule.Migrations
 {
-    public partial class init : Migration
+    public partial class inital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,6 +44,21 @@ namespace TrainingModule.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Trainings",
+                columns: table => new
+                {
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Trainings", x => x.TrainingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -193,129 +208,108 @@ namespace TrainingModule.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Feedbacks",
-                columns: table => new
-                {
-                    FeedbackId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FeedbackContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ReplyId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: true),
-                    ManagerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Feedbacks", x => x.FeedbackId);
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "EmployeeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Feedbacks_Managers_ManagerId",
-                        column: x => x.ManagerId,
-                        principalTable: "Managers",
-                        principalColumn: "ManagerId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PostUpdates",
                 columns: table => new
                 {
-                    PostUpdateId = table.Column<int>(type: "int", nullable: false)
+                    UpdateId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PostContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ManagerId = table.Column<int>(type: "int", nullable: true)
+                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PostUpdates", x => x.PostUpdateId);
+                    table.PrimaryKey("PK_PostUpdates", x => x.UpdateId);
                     table.ForeignKey(
                         name: "FK_PostUpdates_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    EmployeeId = table.Column<int>(type: "int", nullable: false),
+                    ManagerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => new { x.EmployeeId, x.ManagerId });
                     table.ForeignKey(
-                        name: "FK_PostUpdates_Managers_ManagerId",
+                        name: "FK_Comments_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Managers_ManagerId",
                         column: x => x.ManagerId,
                         principalTable: "Managers",
                         principalColumn: "ManagerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Trainings",
+                name: "Materials",
                 columns: table => new
                 {
-                    TrainingId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    manager = table.Column<int>(type: "int", nullable: true)
+                    TrainingId = table.Column<int>(type: "int", nullable: false),
+                    ManagerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Trainings", x => x.TrainingId);
+                    table.PrimaryKey("PK_Materials", x => new { x.TrainingId, x.ManagerId });
                     table.ForeignKey(
-                        name: "FK_Trainings_Managers_manager",
-                        column: x => x.manager,
+                        name: "FK_Materials_Managers_ManagerId",
+                        column: x => x.ManagerId,
                         principalTable: "Managers",
                         principalColumn: "ManagerId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Materials_Trainings_TrainingId",
+                        column: x => x.TrainingId,
+                        principalTable: "Trainings",
+                        principalColumn: "TrainingId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Replies",
+                name: "Post",
                 columns: table => new
                 {
-                    ReplyId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReplyContent = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    FeedbackId = table.Column<int>(type: "int", nullable: true)
+                    UpdateId = table.Column<int>(type: "int", nullable: false),
+                    ManagerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Replies", x => x.ReplyId);
+                    table.PrimaryKey("PK_Post", x => new { x.UpdateId, x.ManagerId });
                     table.ForeignKey(
-                        name: "FK_Replies_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_Post_Managers_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Managers",
+                        principalColumn: "ManagerId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Replies_Feedbacks_FeedbackId",
-                        column: x => x.FeedbackId,
-                        principalTable: "Feedbacks",
-                        principalColumn: "FeedbackId",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_Post_PostUpdates_UpdateId",
+                        column: x => x.UpdateId,
+                        principalTable: "PostUpdates",
+                        principalColumn: "UpdateId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "3aad58c4-8501-4218-8b13-dd805c36653b", "0c555c23-d3e8-459c-81f8-b49b7ac2812b", "Manager", "Manager" });
+                values: new object[] { "dd6d7adc-11fb-478b-90f5-5cd13720b601", "49de69d2-ddd0-449f-828d-8d8bc91c502b", "Manager", "Manager" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "3b48de39-fc00-4e9c-8e0f-92149f82ced1", "d59b58d6-281b-4120-9753-27a626f21378", "Employee", "Employee" });
+                values: new object[] { "bd956ae9-aea1-42f5-a626-33bb5bd56671", "2f5e4a3f-b24e-4215-944f-cf30078b63d9", "Employee", "Employee" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -357,24 +351,14 @@ namespace TrainingModule.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_ManagerId",
+                table: "Comments",
+                column: "ManagerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Employees_IdentityUserId",
                 table: "Employees",
                 column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_EmployeeId",
-                table: "Feedbacks",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_IdentityUserId",
-                table: "Feedbacks",
-                column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_ManagerId",
-                table: "Feedbacks",
-                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Managers_IdentityUserId",
@@ -382,29 +366,19 @@ namespace TrainingModule.Migrations
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostUpdates_IdentityUserId",
-                table: "PostUpdates",
-                column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostUpdates_ManagerId",
-                table: "PostUpdates",
+                name: "IX_Materials_ManagerId",
+                table: "Materials",
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Replies_FeedbackId",
-                table: "Replies",
-                column: "FeedbackId");
+                name: "IX_Post_ManagerId",
+                table: "Post",
+                column: "ManagerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Replies_IdentityUserId",
-                table: "Replies",
+                name: "IX_PostUpdates_IdentityUserId",
+                table: "PostUpdates",
                 column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Trainings_manager",
-                table: "Trainings",
-                column: "manager");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -425,25 +399,28 @@ namespace TrainingModule.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "PostUpdates");
+                name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Replies");
+                name: "Materials");
 
             migrationBuilder.DropTable(
-                name: "Trainings");
+                name: "Post");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Feedbacks");
-
-            migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
+                name: "Trainings");
+
+            migrationBuilder.DropTable(
                 name: "Managers");
+
+            migrationBuilder.DropTable(
+                name: "PostUpdates");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

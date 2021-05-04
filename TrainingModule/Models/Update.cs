@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class PostUpdate
+    public class Update
     {
         [Key]
-        public int PostUpdateId { get; set; }
+        public int UpdateId { get; set; }
         [Required]
         public string Title { get; set; }
         [Required]
         public string PostContent { get; set; } 
-        [Required]
+        [Required]   
         public DateTime DateCreated { get; set; }
 
-        [ForeignKey("IdentityUserId")]
-        public string IdentityUserId { get; set; }
+
         public virtual IdentityUser IdentityUser { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }

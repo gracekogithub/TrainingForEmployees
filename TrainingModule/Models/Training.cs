@@ -19,7 +19,6 @@ namespace TrainingModule.Models
         [Required]
         public DateTime DateCreated { get; set; }
 
-        [ForeignKey("manager")]
-        public Manager Manager { get; set; }
+        public ICollection<Material> Materials { get; set; }
     }
 }

@@ -10,15 +10,15 @@ namespace TrainingModule.Models
 {
     public class Manager
     {
+        [Key]
         public int ManagerId { get; set; }
         public string ManagerName { get; set; }
-        public ICollection<Comment> Comment { get; set; }
-       
 
         [ForeignKey("IdentityUser")]
-        [Display(Name = "Manager")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-       
+        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Post> Posts { get; set; }
+        public ICollection<Material> Materials { get; set; }
     }
 }

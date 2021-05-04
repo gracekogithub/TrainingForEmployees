@@ -10,8 +10,11 @@ namespace TrainingModule.Models
 {
     public class Comment
     {
+        [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
+        [ForeignKey("Manager")]
         public int ManagerId { get; set; }
+       
         public Employee Employee { get; set; }
         public Manager Manager { get; set; }
 

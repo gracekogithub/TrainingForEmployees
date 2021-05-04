@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,16 +8,14 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class Post
+    public class Material
     {
-
-        [ForeignKey("Update")]
-        public int UpdateId { get; set; }
+        [ForeignKey("Training")]
+        public int TrainingId { get; set; }
         [ForeignKey("Manager")]
         public int ManagerId { get; set; }
 
-        public Update Update { get; set; }
+        public Training Training { get; set; }
         public Manager Manager { get; set; }
-
     }
 }

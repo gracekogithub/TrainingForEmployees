@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using TrainingModule.ActionFilters;
 using TrainingModule.Data;
 using TrainingModule.Models;
-using Microsoft.AspNetCore.Http;
+
 
 namespace TrainingModule.Controllers
 {
@@ -52,12 +52,12 @@ namespace TrainingModule.Controllers
         [HttpGet]
         public IActionResult AddFeedback()
         {
-            Feedback feedback = new Feedback();
+            Comment feedback = new Comment();
             return View(feedback);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddFeedback(Feedback feedback)
+        public IActionResult AddFeedback(Comment feedback)
         {
             if (ModelState.IsValid)
             {
