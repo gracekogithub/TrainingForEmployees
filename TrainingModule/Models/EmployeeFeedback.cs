@@ -12,7 +12,7 @@ namespace TrainingModule.Models
     {
         [ForeignKey("Employee")]
         public int EmployeeId { get; set; }
-        [ForeignKey("Feedback")]
+        [ForeignKey("EmployeeFeedback")]
         public int FeedbackId { get; set; }
        
         public virtual Employee Employee { get; set; }

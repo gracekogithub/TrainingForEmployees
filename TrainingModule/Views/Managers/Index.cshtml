@@ -1,0 +1,46 @@
+﻿@model IEnumerable<TrainingModule.Models.Manager>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create manager lists</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ManagerFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManagerLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdentityUser)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManagerFirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ManagerLastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
+            </td>
+        </tr>
+     }
+    </tbody>
+</table>

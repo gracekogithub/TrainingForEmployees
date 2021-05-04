@@ -6,10 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Training\**" />
-    <Content Remove="Views\Training\**" />
-    <EmbeddedResource Remove="Views\Training\**" />
-    <None Remove="Views\Training\**" />
+    <Compile Remove="wwwroot\content\**" />
+    <Content Remove="wwwroot\content\**" />
+    <EmbeddedResource Remove="wwwroot\content\**" />
+    <None Remove="wwwroot\content\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +18,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -36,11 +35,8 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Views\PostUpdates\" />
-    <Folder Include="Views\Replies\" />
-    <Folder Include="wwwroot\content\blog\" />
-    <Folder Include="wwwroot\content\video\" />
-    <Folder Include="wwwroot\content\static\" />
+    <Folder Include="Views\Trainings\" />
+    <Folder Include="wwwroot\Images\" />
   </ItemGroup>
 
 </Project>

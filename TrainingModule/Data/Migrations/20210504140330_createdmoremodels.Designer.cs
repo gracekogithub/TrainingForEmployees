@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingModule.Data;
 
 namespace TrainingModule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210504140330_createdmoremodels")]
+    partial class createdmoremodels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrainingModule.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b467d830-9b3d-43b0-ab3d-62ebd03e189d",
-                            ConcurrencyStamp = "3ca763d6-6deb-4e37-ab5d-b90973305f60",
+                            Id = "7858376c-64ed-4b91-af39-f6b629efdf9c",
+                            ConcurrencyStamp = "8012ee14-d2d9-410c-95a4-74a4886bea78",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "12924f96-00df-4cde-b42c-d9dbc40ca883",
-                            ConcurrencyStamp = "057652e5-0988-4f9e-859e-a80bb88ca4c2",
+                            Id = "fec9c180-53b6-4e5d-96cf-3f68cdd23836",
+                            ConcurrencyStamp = "293d2e5b-1a48-40c6-8f38-6a52fb299d0d",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -398,7 +400,7 @@ namespace TrainingModule.Migrations
 
                     b.HasKey("UpdateId");
 
-                    b.ToTable("Updates");
+                    b.ToTable("PostUpdates");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -18,7 +18,7 @@ namespace TrainingModule.Data
         public virtual DbSet<Training> Trainings { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
-        public virtual DbSet<Update> PostUpdates { get; set; }
+        public virtual DbSet<Update> Updates { get; set; }
         public virtual DbSet<ManagerFeedback> ManagerFeedbacks { get; set; }
         public virtual DbSet<ManagerTraining> ManagerTrainings { get; set; }
         public virtual DbSet<ManagerUpdate> ManagerUpdates { get; set; }
@@ -40,6 +40,7 @@ namespace TrainingModule.Data
                     Name = "Employee",
                     NormalizedName = "EMPLOYEE"
                 });
+           
             //base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ManagerFeedback>()
              .HasKey(fe => new { fe.FeedbackId, fe.ManagerId });
