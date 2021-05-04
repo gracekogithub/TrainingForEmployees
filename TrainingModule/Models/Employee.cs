@@ -12,11 +12,15 @@ namespace TrainingModule.Models
     {
         [Key]
         public int EmployeeId { get; set; }
-        public string EmployeeName { get; set; }
+        [Required]
+        public string EmployeeFirstName { get; set; }
+        [Required]
+        public string EmployeeLastName { get; set; }
+
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<EmployeeFeedback> EmployeeFeebacks { get; set; }
     }
 }

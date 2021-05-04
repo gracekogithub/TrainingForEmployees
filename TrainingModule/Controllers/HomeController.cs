@@ -52,12 +52,12 @@ namespace TrainingModule.Controllers
         [HttpGet]
         public IActionResult AddFeedback()
         {
-            Comment feedback = new Comment();
+            ManagerFeedback feedback = new ManagerFeedback();
             return View(feedback);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddFeedback(Comment feedback)
+        public IActionResult AddFeedback(ManagerFeedback feedback)
         {
             if (ModelState.IsValid)
             {

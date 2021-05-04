@@ -8,16 +8,15 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class Post
+    public class ManagerFeedback
     {
-
-        [ForeignKey("Update")]
-        public int UpdateId { get; set; }
+        [ForeignKey("Feedback")]
+        public int FeedbackId { get; set; }
         [ForeignKey("Manager")]
         public int ManagerId { get; set; }
-
-        public Update Update { get; set; }
-        public Manager Manager { get; set; }
+       
+        public virtual Feedback Feedback { get; set; }
+        public virtual Manager Manager { get; set; }
 
     }
 }

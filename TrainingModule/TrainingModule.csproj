@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
+    <Folder Include="Services\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\PostUpdates\" />
     <Folder Include="Views\Replies\" />

@@ -19,8 +19,6 @@ namespace TrainingModule.Models
         [Required]   
         public DateTime DateCreated { get; set; }
 
-
-        public virtual IdentityUser IdentityUser { get; set; }
-        public ICollection<Post> Posts { get; set; }
+        public virtual ICollection<ManagerUpdate> ManagerUpdates { get; set; }
     }
 }

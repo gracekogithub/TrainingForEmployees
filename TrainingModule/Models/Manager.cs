@@ -12,13 +12,16 @@ namespace TrainingModule.Models
     {
         [Key]
         public int ManagerId { get; set; }
-        public string ManagerName { get; set; }
+        [Required]
+        public string ManagerFirstName { get; set; }
+        [Required]
+        public string ManagerLastName { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-        public ICollection<Comment> Comments { get; set; }
-        public ICollection<Post> Posts { get; set; }
-        public ICollection<Material> Materials { get; set; }
+        public virtual ICollection<ManagerFeedback> ManagerFeedbacks { get; set; }
+        public virtual ICollection<ManagerUpdate> ManagerUpdates { get; set; }
+        public virtual ICollection<ManagerTraining> ManagerTrainings { get; set; }
     }
 }

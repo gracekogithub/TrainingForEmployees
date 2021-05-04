@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingModule.Data;
 
 namespace TrainingModule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210504045125_manytomanyrelationshipcreated")]
+    partial class manytomanyrelationshipcreated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,15 +50,15 @@ namespace TrainingModule.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dd6d7adc-11fb-478b-90f5-5cd13720b601",
-                            ConcurrencyStamp = "49de69d2-ddd0-449f-828d-8d8bc91c502b",
+                            Id = "197e6c60-33d8-4137-be22-3bc481d2570c",
+                            ConcurrencyStamp = "15bf3e61-8baf-4432-92c6-aad16e8b1b68",
                             Name = "Manager",
                             NormalizedName = "Manager"
                         },
                         new
                         {
-                            Id = "bd956ae9-aea1-42f5-a626-33bb5bd56671",
-                            ConcurrencyStamp = "2f5e4a3f-b24e-4215-944f-cf30078b63d9",
+                            Id = "9c41baef-457f-44eb-9939-0a25fd01ce4e",
+                            ConcurrencyStamp = "a3eae4a3-91a2-4013-b3ed-d9fdc760fe12",
                             Name = "Employee",
                             NormalizedName = "Employee"
                         });
@@ -231,21 +233,6 @@ namespace TrainingModule.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Comment", b =>
-                {
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ManagerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId", "ManagerId");
-
-                    b.HasIndex("ManagerId");
-
-                    b.ToTable("Comments");
-                });
-
             modelBuilder.Entity("TrainingModule.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
@@ -253,7 +240,15 @@ namespace TrainingModule.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("EmployeeName")
+                    b.Property<string>("EmployeeFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmployeeLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Feedback")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityUserId")
@@ -276,7 +271,15 @@ namespace TrainingModule.Migrations
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ManagerName")
+                    b.Property<string>("ManagerFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ManagerLastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reply")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ManagerId");
@@ -286,7 +289,22 @@ namespace TrainingModule.Migrations
                     b.ToTable("Managers");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Material", b =>
+            modelBuilder.Entity("TrainingModule.Models.ManagerEmployee", b =>
+                {
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ManagerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeId", "ManagerId");
+
+                    b.HasIndex("ManagerId");
+
+                    b.ToTable("ManagerEmployees");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.ManagerTraining", b =>
                 {
                     b.Property<int>("TrainingId")
                         .HasColumnType("int");
@@ -296,12 +314,10 @@ namespace TrainingModule.Migrations
 
                     b.HasKey("TrainingId", "ManagerId");
 
-                    b.HasIndex("ManagerId");
-
-                    b.ToTable("Materials");
+                    b.ToTable("ManagerTrainings");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Post", b =>
+            modelBuilder.Entity("TrainingModule.Models.ManagerUpdate", b =>
                 {
                     b.Property<int>("UpdateId")
                         .HasColumnType("int");
@@ -313,7 +329,7 @@ namespace TrainingModule.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Post");
+                    b.ToTable("ManagerUpdates");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Training", b =>
@@ -349,9 +365,6 @@ namespace TrainingModule.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("PostContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -361,8 +374,6 @@ namespace TrainingModule.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UpdateId");
-
-                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("PostUpdates");
                 });
@@ -418,25 +429,6 @@ namespace TrainingModule.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Comment", b =>
-                {
-                    b.HasOne("TrainingModule.Models.Employee", "Employee")
-                        .WithMany("Comments")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TrainingModule.Models.Manager", "Manager")
-                        .WithMany("Comments")
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Manager");
-                });
-
             modelBuilder.Entity("TrainingModule.Models.Employee", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
@@ -455,11 +447,30 @@ namespace TrainingModule.Migrations
                     b.Navigation("IdentityUser");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Material", b =>
+            modelBuilder.Entity("TrainingModule.Models.ManagerEmployee", b =>
+                {
+                    b.HasOne("TrainingModule.Models.Employee", "Employee")
+                        .WithMany("ManagerEmployees")
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TrainingModule.Models.Manager", "Manager")
+                        .WithMany("ManagerEmployees")
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.ManagerTraining", b =>
                 {
                     b.HasOne("TrainingModule.Models.Manager", "Manager")
-                        .WithMany("Materials")
-                        .HasForeignKey("ManagerId")
+                        .WithMany("ManagerTrainings")
+                        .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -474,16 +485,16 @@ namespace TrainingModule.Migrations
                     b.Navigation("Training");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Post", b =>
+            modelBuilder.Entity("TrainingModule.Models.ManagerUpdate", b =>
                 {
                     b.HasOne("TrainingModule.Models.Manager", "Manager")
-                        .WithMany("Posts")
+                        .WithMany("ManagerUpdates")
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TrainingModule.Models.Update", "Update")
-                        .WithMany("Posts")
+                        .WithMany("ManagerUpdates")
                         .HasForeignKey("UpdateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -493,27 +504,18 @@ namespace TrainingModule.Migrations
                     b.Navigation("Update");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Update", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId");
-
-                    b.Navigation("IdentityUser");
-                });
-
             modelBuilder.Entity("TrainingModule.Models.Employee", b =>
                 {
-                    b.Navigation("Comments");
+                    b.Navigation("ManagerEmployees");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Manager", b =>
                 {
-                    b.Navigation("Comments");
+                    b.Navigation("ManagerEmployees");
 
-                    b.Navigation("Materials");
+                    b.Navigation("ManagerTrainings");
 
-                    b.Navigation("Posts");
+                    b.Navigation("ManagerUpdates");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Training", b =>
@@ -523,7 +525,7 @@ namespace TrainingModule.Migrations
 
             modelBuilder.Entity("TrainingModule.Models.Update", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("ManagerUpdates");
                 });
 #pragma warning restore 612, 618
         }

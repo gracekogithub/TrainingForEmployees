@@ -19,6 +19,6 @@ namespace TrainingModule.Models
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public ICollection<Material> Materials { get; set; }
+        public virtual ICollection<ManagerTraining> Materials { get; set; }
     }
 }
