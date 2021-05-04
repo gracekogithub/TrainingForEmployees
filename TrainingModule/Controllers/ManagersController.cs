@@ -93,29 +93,13 @@ namespace TrainingModule.Controllers
             }
 
         }
-
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            var customer = _context.Managers.Where(e => e.ManagerId == id).FirstOrDefault();
-            return View(customer);
+            var data = _context.Managers.FirstOrDefault(o => o.ManagerId == id);
+            _context.Managers.Remove(data);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
-
-        // POST: Employees/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, Manager customer)
-        {
-            try
-            {
-                _context.Managers.Remove(customer);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
+        
     }   
 }
