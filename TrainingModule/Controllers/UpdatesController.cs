@@ -27,24 +27,11 @@ namespace TrainingModule.Controllers
         {
             return View();
         }
-        //public IActionResult AddUpdates(int? id)
-        //{
-        //    Update update = new Update();
-        //    if (id == null)
-        //    {
-        //        return View(update);
-        //    }
-        //    update = _context.Updates.FirstOrDefault(u => u.UpdateId == id);
-        //    if (update == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(update);
-        //}
+      
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public IActionResult Create(Update update)
+        //public IActionResult EditNewsletter(Update update)
         //{
         //    if (ModelState.IsValid)
         //    {
@@ -59,7 +46,7 @@ namespace TrainingModule.Controllers
         //        _context.SaveChanges();
         //        return RedirectToAction(nameof(Index));
         //    }
-            
+
         //    return View(update);
         //}
         [HttpPost]

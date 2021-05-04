@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using TrainingModule.Data;
 using TrainingModule.Models;
+using TrainingModule.ViewModels;
 
 namespace TrainingModule.Controllers
 {
@@ -77,6 +78,20 @@ namespace TrainingModule.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
-
+        //public IActionResult SelectMaterials(int? id)
+        //{
+        //    TrainingVM training = new TrainingVM();
+        //    training.MaterialList = _context.
+        //    if (id == null)
+        //    {
+        //        return View(update);
+        //    }
+        //    update = _context.Updates.FirstOrDefault(u => u.UpdateId == id);
+        //    if (update == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(update);
+        //}
     }
 }

@@ -24,6 +24,8 @@ namespace TrainingModule.Data
         public virtual DbSet<ManagerUpdate> ManagerUpdates { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<EmployeeFeedback> EmployeeFeedbacks { get; set; }
+        public virtual DbSet<Material> Matrials { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

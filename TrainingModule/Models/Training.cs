@@ -14,11 +14,13 @@ namespace TrainingModule.Models
         public int TrainingId { get; set; }
         [Required]
         public string Title { get; set; }
-        [Required]
         public string Body { get; set; }
+
+        //public Object TrainingMaterials { get; set; }
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public virtual ICollection<ManagerTraining> Materials { get; set; }
+        public virtual ICollection<ManagerTraining> ManagerTraining { get; set; }
+        public virtual ICollection<Material> Matrials { get; set; }
     }
 }
