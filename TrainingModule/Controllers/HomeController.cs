@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Blog.Data.Repository;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 using TrainingModule.ActionFilters;
 using TrainingModule.Data;
 using TrainingModule.Models;
-
+using TrainingModule.ViewModels;
 
 namespace TrainingModule.Controllers
 {
@@ -22,14 +23,16 @@ namespace TrainingModule.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private IRepository _repo;
+     
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IRepository repo )
         {
             _logger = logger;
+            _repo = repo;
         }
         public IActionResult Index()
         {
-            //HttpContext.Session.SetString("IndentityUser", "");
             return View();
         }
         public IActionResult YoutubeIndex()
@@ -44,27 +47,7 @@ namespace TrainingModule.Controllers
             return View(search);
 
         }
-        public IActionResult Upload(IFormFile file)
-        {
+        
 
-            return RedirectToAction(nameof(Index));
-        }
-        [HttpGet]
-        public IActionResult AddFeedback()
-        {
-            ManagerFeedback feedback = new ManagerFeedback();
-            return View(feedback);
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddFeedback(ManagerFeedback feedback)
-        {
-            if (ModelState.IsValid)
-            {
-                return RedirectToAction("Success");
-
-            }
-            return View(feedback);
-        }
     }
 }

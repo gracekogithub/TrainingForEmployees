@@ -7,7 +7,7 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="AddUpdates">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -25,22 +25,47 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostContent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UpdateId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.UpdateId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostContent)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.UpdateId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.UpdateId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<div class="container">
+    <h2>Weekly Updates</h2>
+    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="FeedbackIndex">
+        <table>
+            <tr>
+                <td>Name: </td>
+                <td></td>
+           
+                <td><input type="text" id="txtNickName" name="NickName" /></td>
+            </tr>
+        </table>
+        <div class="form-group">
+            <label for="comment">Respect/Integrity/Stewardship/Excellence/Collaboration/Kindness</label>
+            <textarea class="form-control" rows="3" id="txtNickName" name="NickName"></textarea>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Submit" class="btn btn-success" style="margin-top:10px" />
+        </div>
+        <hr />
+        @ViewBag.Name
+    </form>
+</div>
+<br />
+<br />

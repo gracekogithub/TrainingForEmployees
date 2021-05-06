@@ -1,0 +1,81 @@
+﻿@model TrainingModule.Models.Training
+
+@{
+    var title = "Create";
+    ViewData["Title"] = "Upsert";
+}
+
+<hr />
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger">
+        @if (Model.TrainingId != 0)
+        {
+            <iput type="hidden" asp-for="TrainingId" />
+            title = "Edit File";
+        }
+        <div class="col=12">
+            <h2 class=" " ttext-primary>@title</h2>
+            <br />
+        </div>
+        <div class="col-" 8">
+            <div class-"form-group row">
+                <div class="col-4">
+                    <label asp-for="Title" class="form-control"><</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-" 8">
+            <div class-"form-group row">
+                <div class="col-4">
+                    <label asp-for="Body" class="form-control"><</label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Body" class="form-control" />
+                    <span asp-validation-for="Body" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-" 8">
+            <div class-"form-group row">
+                <div class="col-4">
+                    <label asp-for="File" class="form-control"><</label>
+                </div>
+                <div class="col-8">
+                    <input type="file" id="projectImage" name="files" multiple class="form-control" />
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-8 offset-4">
+                @if (Model.TrainingId != 0)
+                {
+                    <partial name=" =" _EditAndBackToListButton"" model="Model.TrainingId" />
+                }
+                else
+                {
+                    <partial name="_CreateAndBackToListButton" />
+                }
+            </div>
+        </div>
+    </div>
+    @if(Model.File !=null)
+    {     <div class="col-4">
+
+    @{
+    var base64 = Convert.ToBase64String(Model.File);
+    var imgSrc = string.Format("data:image/png;base64{0}", base64);
+    }
+          <img  src="@imgSrc" height="200px" width="200px" />
+           </div>
+    }
+</form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+

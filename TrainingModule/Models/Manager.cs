@@ -20,8 +20,6 @@ namespace TrainingModule.Models
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-        public virtual ICollection<ManagerFeedback> ManagerFeedbacks { get; set; }
-        public virtual ICollection<ManagerUpdate> ManagerUpdates { get; set; }
-        public virtual ICollection<ManagerTraining> ManagerTrainings { get; set; }
+       
     }
 }

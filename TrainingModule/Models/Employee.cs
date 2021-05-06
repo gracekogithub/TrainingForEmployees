@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class Employee
+    public class ITrainingRepository
     {
         [Key]
         public int EmployeeId { get; set; }
@@ -21,6 +21,6 @@ namespace TrainingModule.Models
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
-        public virtual ICollection<EmployeeFeedback> EmployeeFeebacks { get; set; }
+
     }
 }

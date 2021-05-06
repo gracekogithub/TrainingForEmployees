@@ -13,14 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\Trainings\UploadMaterialcshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Views\Trainings\UploadMaterialcshtml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.51.0.2294" />
     <PackageReference Include="Grpc.Core" Version="2.37.1" />
     <PackageReference Include="MailKit" Version="2.11.1" />
@@ -43,10 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UploadedFiles\" />
-    <Folder Include="Views\Materials\" />
     <Folder Include="wwwroot\Images\" />
-    <Folder Include="wwwroot\Files\" />
+    <Folder Include="wwwroot\files\" />
   </ItemGroup>
 
 </Project>

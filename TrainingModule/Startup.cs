@@ -1,3 +1,4 @@
+using Blog.Data.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -7,21 +8,24 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TrainingModule.ActionFilters;
 using TrainingModule.Data;
-
+using TrainingModule.Helpers;
 
 namespace TrainingOne
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,7 +36,10 @@ namespace TrainingOne
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+                
             services.AddDistributedMemoryCache();
+            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
 
             services.AddDbContext<ApplicationDbContext>(opts =>
                 opts.UseSqlServer(
@@ -46,6 +53,8 @@ namespace TrainingOne
             s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddControllers(config => config.Filters.Add(typeof(GlobalRouting)));
             services.AddControllersWithViews();
+            services.AddTransient<IRepository, Repository>();
+
             services.AddMvc();
             services.AddSwaggerGen(c =>
             {

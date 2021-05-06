@@ -27,28 +27,28 @@ namespace TrainingModule.Controllers
         {
             return View();
         }
-      
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult EditNewsletter(Update update)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (update.UpdateId == 0)
-        //        {
-        //            _context.Updates.Add(update);
-        //        }
-        //        else
-        //        {
-        //            _context.Updates.Update(update);
-        //        }
-        //        _context.SaveChanges();
-        //        return RedirectToAction(nameof(Index));
-        //    }
 
-        //    return View(update);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditNewsletter(Update update)
+        {
+            if (ModelState.IsValid)
+            {
+                if (update.UpdateId == 0)
+                {
+                    _context.Updates.Add(update);
+                }
+                else
+                {
+                    _context.Updates.Update(update);
+                }
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(update);
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Update update)

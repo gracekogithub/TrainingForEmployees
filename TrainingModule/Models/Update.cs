@@ -16,9 +16,11 @@ namespace TrainingModule.Models
         public string Title { get; set; }
         [Required]
         public string PostContent { get; set; } 
-        [Required]   
+   
         public DateTime DateCreated { get; set; }
 
-        public virtual ICollection<ManagerUpdate> ManagerUpdates { get; set; }
+        [ForeignKey("IdentityUser")]
+        public string IdentityUserId { get; set; }
+        public IdentityUser IdentityUser { get; set; }
     }
 }

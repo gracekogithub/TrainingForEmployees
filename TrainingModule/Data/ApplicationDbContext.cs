@@ -13,18 +13,16 @@ namespace TrainingModule.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
-        public virtual DbSet<Training> Trainings { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Manager> Managers { get; set; }
-        public virtual DbSet<Update> Updates { get; set; }
-        public virtual DbSet<ManagerFeedback> ManagerFeedbacks { get; set; }
-        public virtual DbSet<ManagerTraining> ManagerTrainings { get; set; }
-        public virtual DbSet<ManagerUpdate> ManagerUpdates { get; set; }
-        public virtual DbSet<Feedback> Feedbacks { get; set; }
-        public virtual DbSet<EmployeeFeedback> EmployeeFeedbacks { get; set; }
-        public virtual DbSet<Material> Matrials { get; set; }
+        public DbSet<Training> Trainings { get; set; }
+        public DbSet<ITrainingRepository> Employees { get; set; }
+        public DbSet<Manager> Managers { get; set; }
+        public DbSet<Update> Updates { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<Material> Materials { get; set; }
+
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,49 +41,19 @@ namespace TrainingModule.Data
                     NormalizedName = "EMPLOYEE"
                 });
            
+            //many to may relationship for multiple trainer
+           
             //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ManagerFeedback>()
-             .HasKey(fe => new { fe.FeedbackId, fe.ManagerId });
-            modelBuilder.Entity<ManagerFeedback>()
-                .HasOne(m => m.Manager)
-                .WithMany(ma => ma.ManagerFeedbacks)
-                .HasForeignKey(m => m.ManagerId);
-            modelBuilder.Entity<ManagerFeedback>()
-                .HasOne(m => m.Feedback)
-                .WithMany(me => me.ManagerFeedbacks)
-                .HasForeignKey(m => m.FeedbackId);
-            modelBuilder.Entity<EmployeeFeedback>()
-             .HasKey(fe => new { fe.FeedbackId, fe.EmployeeId });
-            modelBuilder.Entity<EmployeeFeedback>()
-                .HasOne(m => m.Employee)
-                .WithMany(ef => ef.EmployeeFeebacks)
-                .HasForeignKey(m => m.EmployeeId);
-            modelBuilder.Entity<EmployeeFeedback>()
-                .HasOne(m => m.Feedback)
-                .WithMany(ef => ef.EmployeeFeedbacks)
-                .HasForeignKey(m => m.FeedbackId);
-            //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ManagerUpdate>()
-             .HasKey(p => new { p.UpdateId, p.ManagerId });
-            modelBuilder.Entity<ManagerUpdate>()
-                .HasOne(u => u.Manager)
-                .WithMany(up => up.ManagerUpdates)
-                .HasForeignKey(u => u.ManagerId);
-            modelBuilder.Entity<ManagerUpdate>()
-                .HasOne(u => u.Update)
-                .WithMany(mu => mu.ManagerUpdates)
-                .HasForeignKey(u => u.UpdateId);
-            //base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<ManagerTraining>()
-             .HasKey(p => new { p.TrainingId, p.ManagerId });
-            modelBuilder.Entity<ManagerTraining>()
-                .HasOne(t => t.Manager)
-                .WithMany(tr => tr.ManagerTrainings)
-                .HasForeignKey(t => t.ManagerId);
-            modelBuilder.Entity<ManagerTraining>()
-                .HasOne(t => t.Manager)
-                .WithMany(mr => mr.ManagerTrainings)
-                .HasForeignKey(t => t.TrainingId);
+            //modelBuilder.Entity<ManagerTraining>()
+            // .HasKey(p => new { p.TrainingId, p.ManagerId });
+            //modelBuilder.Entity<ManagerTraining>()
+            //    .HasOne(t => t.Manager)
+            //    .WithMany(tr => tr.ManagerTrainings)
+            //    .HasForeignKey(t => t.ManagerId);
+            //modelBuilder.Entity<ManagerTraining>()
+            //    .HasOne(t => t.Manager)
+            //    .WithMany(mr => mr.ManagerTrainings)
+            //    .HasForeignKey(t => t.TrainingId);
 
         }
     }

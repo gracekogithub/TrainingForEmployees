@@ -75,6 +75,7 @@ namespace TrainingModule.Models
         public string regionCode { get; set; }
         public PageInfo pageInfo { get; set; }
         public List<Item> items { get; set; }
+        public List <string> comments { get; set; }
     }
 
 
