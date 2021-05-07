@@ -12,7 +12,6 @@ namespace TrainingModule.Models
         [Key]
         public int FeedbackId { get; set; }
        
-        public string NickName { get; set; }
         public string Message { get; set; }
       
         public DateTime Created { get; set; }

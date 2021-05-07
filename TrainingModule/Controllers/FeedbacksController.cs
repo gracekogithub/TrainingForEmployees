@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using TrainingModule.ViewModels;
 
 namespace TrainingModule.Controllers
 {
+    //[Authorize(Roles = "Employee")]
     public class FeedbacksController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -155,15 +157,14 @@ namespace TrainingModule.Controllers
 
         public ActionResult Add(TrainingFeedbackVM post)
         {
-            var title = post.NickName;
+            
             var message = post.Message;
-            var postId = post.PostId;
+            var postId = post.FeedbackId;
           
 
             Feedback feedback = new Feedback()
             {
                 FeedbackId = postId,
-                NickName = title,
                 Message = message,
                 Created = DateTime.Now
             };

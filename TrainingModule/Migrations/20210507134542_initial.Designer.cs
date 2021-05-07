@@ -10,8 +10,8 @@ using TrainingModule.Data;
 namespace TrainingModule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210506133533_inital")]
-    partial class inital
+    [Migration("20210507134542_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,15 +50,15 @@ namespace TrainingModule.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0b93c3c8-d842-433e-8cb3-566b4d72f33f",
-                            ConcurrencyStamp = "ee6b4d7f-b9fd-4d0e-a314-ac5f05e48bcf",
+                            Id = "b16d5f56-9d3b-4b23-810b-337e8e07ec0e",
+                            ConcurrencyStamp = "37bccd01-d902-407e-88ba-5e871808e364",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         },
                         new
                         {
-                            Id = "5559f9d4-9a16-47f1-b145-7a2582ea80f4",
-                            ConcurrencyStamp = "b0837055-a7ee-430d-b513-e57af9d3b689",
+                            Id = "f6564e9f-7907-4caa-b010-f5f46a3d8bc8",
+                            ConcurrencyStamp = "cd287cc4-9d7f-4b93-b769-5ca418a0b56b",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         });
@@ -233,38 +233,15 @@ namespace TrainingModule.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Feedback", b =>
-                {
-                    b.Property<int>("FeedbackId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NickName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TrainingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FeedbackId");
-
-                    b.HasIndex("TrainingId");
-
-                    b.ToTable("Feedbacks");
-                });
-
-            modelBuilder.Entity("TrainingModule.Models.ITrainingRepository", b =>
+            modelBuilder.Entity("TrainingModule.Models.Employee", b =>
                 {
                     b.Property<int>("EmployeeId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeFirstName")
                         .IsRequired()
@@ -284,12 +261,38 @@ namespace TrainingModule.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("TrainingModule.Models.Feedback", b =>
+                {
+                    b.Property<int>("FeedbackId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FeedbackId");
+
+                    b.HasIndex("TrainingId");
+
+                    b.ToTable("Feedbacks");
+                });
+
             modelBuilder.Entity("TrainingModule.Models.Manager", b =>
                 {
                     b.Property<int>("ManagerId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
@@ -309,24 +312,6 @@ namespace TrainingModule.Migrations
                     b.ToTable("Managers");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Material", b =>
-                {
-                    b.Property<int>("MaterialId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MaterialId");
-
-                    b.ToTable("Materials");
-                });
-
             modelBuilder.Entity("TrainingModule.Models.Training", b =>
                 {
                     b.Property<int>("TrainingId")
@@ -340,16 +325,11 @@ namespace TrainingModule.Migrations
                     b.Property<byte[]>("File")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TrainingId");
-
-                    b.HasIndex("IdentityUserId");
 
                     b.ToTable("Trainings");
                 });
@@ -433,6 +413,15 @@ namespace TrainingModule.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("TrainingModule.Models.Employee", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
+                });
+
             modelBuilder.Entity("TrainingModule.Models.Feedback", b =>
                 {
                     b.HasOne("TrainingModule.Models.Training", "Training")
@@ -444,25 +433,7 @@ namespace TrainingModule.Migrations
                     b.Navigation("Training");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.ITrainingRepository", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId");
-
-                    b.Navigation("IdentityUser");
-                });
-
             modelBuilder.Entity("TrainingModule.Models.Manager", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId");
-
-                    b.Navigation("IdentityUser");
-                });
-
-            modelBuilder.Entity("TrainingModule.Models.Training", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()

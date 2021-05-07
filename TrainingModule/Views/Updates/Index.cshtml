@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Team Updates!</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -45,27 +45,6 @@
         }
     </tbody>
 </table>
-<div class="container">
-    <h2>Weekly Updates</h2>
-    <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="FeedbackIndex">
-        <table>
-            <tr>
-                <td>Name: </td>
-                <td></td>
-           
-                <td><input type="text" id="txtNickName" name="NickName" /></td>
-            </tr>
-        </table>
-        <div class="form-group">
-            <label for="comment">Respect/Integrity/Stewardship/Excellence/Collaboration/Kindness</label>
-            <textarea class="form-control" rows="3" id="txtNickName" name="NickName"></textarea>
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Submit" class="btn btn-success" style="margin-top:10px" />
-        </div>
-        <hr />
-        @ViewBag.Name
-    </form>
-</div>
-<br />
+
+
 <br />

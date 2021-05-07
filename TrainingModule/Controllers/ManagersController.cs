@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class ManagersController : Controller
     {
         private ApplicationDbContext _context;
@@ -17,35 +19,43 @@ namespace TrainingModule.Controllers
         {
             _context = context;
         }
-        // GET: ManagersController1
-        public IActionResult Index()
+ 
+        //public IActionResult Index()
+        //{
+        //    var managers = _context.Managers.ToList();
+        //    if (managers.Count == 0)
+        //    {
+        //        return RedirectToAction(nameof(Create));
+        //    }
+        //    return View(managers);
+        //}
+
+        public IActionResult Index(int? value, Employee employees)
         {
-            var managers = _context.Managers.ToList();
-            if (managers.Count == 0)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var manager = _context.Managers.Where(cu => cu.IdentityUserId == userId).ToList();
+            if (manager.Count == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
-
-            return View(managers);
+            var employee = _context.Employees.ToList();
+            
+            return View(employee);
+            
         }
-
-        // GET: ManagersController1/Details/5
         public IActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: ManagersController1/Create
+     
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: ManagersController1/Create
+   
 
-
-
-        // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Manager manager)
@@ -66,7 +76,7 @@ namespace TrainingModule.Controllers
             //ViewBag.Products = new SelectList(product.Name, "Name", "Name");
         }
       
-        // GET: ManagersController1/Edit/5
+
         public ActionResult Edit(int id)
         {
             var manager = _context.Managers.Where(e => e.ManagerId == id).FirstOrDefault();
@@ -78,8 +88,6 @@ namespace TrainingModule.Controllers
         {
             try
             {
-                //var customerwithLatLng = _map.GetGeoCoding(customer);
-
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 manager.IdentityUserId = userId;
                 _context.Managers.Update(manager);

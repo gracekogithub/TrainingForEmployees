@@ -12,29 +12,104 @@ using TrainingModule.Models;
 
 using Microsoft.AspNetCore.Hosting;
 using System.Net.Http.Headers;
+using TrainingModule.ViewModels;
+using ExcelDataReader;
+using Grpc.Core;
 
 namespace TrainingModule.Controllers
 {
     public class TrainingsController : Controller
     {
-        private readonly IWebHostEnvironment _environment;
+        //private readonly IWebHostEnvironment _environment;
         private readonly ApplicationDbContext _context;
-        public TrainingsController(IWebHostEnvironment environment, ApplicationDbContext context)
+        public TrainingsController(ApplicationDbContext context)
         {
             _context = context;
-            _environment = environment;
         }
-        public IActionResult Index()
-        {
-            
 
-            return View();
+        public IActionResult Index(int? id)
+        {
+            var training = _context.Trainings.ToList();
+            return View(training);
         }
+        [HttpPost]
+        public IActionResult IndexFile(IFormFile file, [FromServices] IHostingEnvironment environment)
+        {
+            string fileName = $"{environment.WebRootPath}\\files\\{file.FileName}";
+            using (FileStream fileStream = System.IO.File.Create(fileName))
+            {
+                file.CopyTo(fileStream);
+                fileStream.Flush();
+            }
+            var trainings = this.GetTrainingList(file.FileName);
+            return View(trainings);
+        }
+        private List<Training> GetTrainingList(string fName)
+        {
+            List<Training> trainings = new List<Training>();
+            var fileName = $"{Directory.GetCurrentDirectory()}{@"\wwwroot\files"}" + "\\" + fName;
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            using (var stream = System.IO.File.Open(fileName, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    while (reader.Read())
+                    {
+                        trainings.Add(new Training()
+                        {
+                            Title = reader.GetValue(0).ToString(),
+                            Body = reader.GetValue(1).ToString(),
+                        });
+                    }
+                }
+                return trainings;
+            }
+        }
+        public IActionResult Save(Training material, IFormFile photo)
+        {
+            if (photo == null || photo.Length == 0)
+            {
+                return Content("File not selected");
+            }
+            else
+            {
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", photo.FileName);
+                var stream = new FileStream(path, FileMode.Create);
+                photo.CopyToAsync(stream);
+                //material.File = photo.FileName;
+
+            }
+            ViewBag.material = material;
+            _context.Trainings.Add(material);
+            _context.SaveChanges();
+            return View("Create");
+        }
+
         public IActionResult Create()
         {
             return View();
         }
-       
+        public IActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            Training tr = _context.Trainings.Find(id);
+            TrainingFeedbackVM feed = new TrainingFeedbackVM();
+
+            if (tr == null)
+            {
+                return NotFound();
+            }
+            feed.FeedbackId = id.Value;
+            feed.Title = tr.Title;
+            var comments = _context.Feedbacks.Where(d => d.TrainingId.Equals(id.Value)).ToList();
+            feed.Feedbacks = comments;
+
+            return View(feed);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(Training training)
@@ -51,6 +126,24 @@ namespace TrainingModule.Controllers
                 return View();
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UploadFile(Training training)
+        {
+            try
+            {
+                _context.Trainings.Add(training);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View();
+            }
+        }
+       
+
         public ActionResult Edit(int id)
         {
             var update = _context.Trainings.Where(e => e.TrainingId == id).FirstOrDefault();
@@ -73,37 +166,17 @@ namespace TrainingModule.Controllers
             }
 
         }
-        
-        
-        
-       
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult Index(List<IFormFile> postedFiles)
-        //{
-        //    string wwwPath = _environment.WebRootPath;
-        //    string contentPath = _environment.ContentRootPath;
 
-        //    string path = Path.Combine(_environment.WebRootPath, "Uploads");
-        //    if (!Directory.Exists(path))
-        //    {
-        //        Directory.CreateDirectory(path);
-        //    }
+        public IActionResult Delete(int id)
+        {
+            var data = _context.Trainings.FirstOrDefault(o => o.TrainingId == id);
+            _context.Trainings.Remove(data);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
 
-        //    List<string> uploadedFiles = new List<string>();
-        //    foreach (IFormFile postedFile in postedFiles)
-        //    {
-        //        string fileName = Path.GetFileName(postedFile.FileName);
-        //        using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
-        //        {
-        //            postedFile.CopyTo(stream);
-        //            uploadedFiles.Add(fileName);
-        //            ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
-        //        }
-        //    }
-            
-        //    return View();
-        //}
+
+      
         public IActionResult Upsert(int? id)
         {
             Training image = new Training();
@@ -181,18 +254,18 @@ namespace TrainingModule.Controllers
         //    return RedirectToAction(nameof(Index));
         //}
         //different way to delete
-        [HttpDelete]
-        public IActionResult Delete(int id)
-        {
-            var item = _context.Trainings.Find(id);
-            if (item == null)
-            {
-                return Json(new { success = false, message = "Error while deleteing." });
-            }
-            _context.Trainings.Remove(item);
-            _context.SaveChanges();
-            return Json(new { success = true, message = "Delete successful." });
-        }
+        //[HttpDelete]
+        //public IActionResult Delete(int? id)
+        //{
+        //    var item = _context.Trainings.Find(id);
+        //    if (item == null)
+        //    {
+        //        return Json(new { success = false, message = "Error while deleteing." });
+        //    }
+        //    _context.Trainings.Remove(item);
+        //    _context.SaveChanges();
+        //    return Json(new { success = true, message = "Delete successful." });
+        //}
     }
 
 }

@@ -44,16 +44,16 @@
         </div>
     </div>
     <br />
-    <br />
-    <br />
-    <h4 align-center>Click each image to see detail.</h4>
+    @*need to fix the routing issue for the picture link*@
+    <h4 align-center>Click any image to post your comment.</h4>
     <div class="row">
+       
         <div class="column" type="button" onClick="redirectOnClick()">
             <script>function redirectOnClick() { document.location = 'Updates/Index' }</script>
             <img src="Images/newsletter.png" alt="newsletter" style="width:100%">
         </div>
         <div class="column" type="button" onClick="redirectOnClick()">
-            @*<a class="nav-link text-dark" asp-area="" asp-controller="Trainings" asp-action="Index"></a>*@
+            <script>function redirectOnClick() { document.location = 'Trainings/Index' }</script>
             <img src="Images/training.png" alt="training" style="width:100%">
         </div>
         <div class="column" type="button" onClick="redirectOnClick()">

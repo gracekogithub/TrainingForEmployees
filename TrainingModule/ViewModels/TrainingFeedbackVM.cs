@@ -9,9 +9,9 @@ namespace TrainingModule.ViewModels
 {
     public class TrainingFeedbackVM
     {
-        public int PostId { get; set; }
+        public int FeedbackId { get; set; }
      
-        public string NickName { get; set; }
+        public string Title { get; set; }
    
         public string Message { get; set; }
 

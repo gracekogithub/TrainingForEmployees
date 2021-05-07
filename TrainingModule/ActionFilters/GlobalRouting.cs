@@ -20,11 +20,11 @@ namespace TrainingModule.ActionFilters
             var controller = context.RouteData.Values["controller"];
             if (controller.Equals("Home"))
             {
-                if (_claimsPrincipal.IsInRole("Employee"))
-                {
-                    context.Result = new RedirectToActionResult("Indwx", "Employees", null);
-                }
-                else if (_claimsPrincipal.IsInRole("Manager"))
+                //if (_claimsPrincipal.IsInRole("Employee"))
+                //{
+                //    context.Result = new RedirectToActionResult("Indwx", "Employees", null);
+                //}
+                 if (_claimsPrincipal.IsInRole("Manager"))
                 {
                     context.Result = new RedirectToActionResult("Index", "Managers", null);
                 }

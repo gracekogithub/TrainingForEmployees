@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace TrainingModule.Migrations
 {
-    public partial class inital : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,17 +47,18 @@ namespace TrainingModule.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials",
+                name: "Trainings",
                 columns: table => new
                 {
-                    MaterialId = table.Column<int>(type: "int", nullable: false)
+                    TrainingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    File = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials", x => x.MaterialId);
+                    table.PrimaryKey("PK_Trainings", x => x.TrainingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -174,6 +175,7 @@ namespace TrainingModule.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmployeeLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -195,6 +197,7 @@ namespace TrainingModule.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ManagerFirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ManagerLastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -202,28 +205,6 @@ namespace TrainingModule.Migrations
                     table.PrimaryKey("PK_Managers", x => x.ManagerId);
                     table.ForeignKey(
                         name: "FK_Managers_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Trainings",
-                columns: table => new
-                {
-                    TrainingId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    File = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    IdentityUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Trainings", x => x.TrainingId);
-                    table.ForeignKey(
-                        name: "FK_Trainings_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -258,7 +239,6 @@ namespace TrainingModule.Migrations
                 {
                     FeedbackId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NickName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrainingId = table.Column<int>(type: "int", nullable: false)
@@ -277,12 +257,12 @@ namespace TrainingModule.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0b93c3c8-d842-433e-8cb3-566b4d72f33f", "ee6b4d7f-b9fd-4d0e-a314-ac5f05e48bcf", "Manager", "MANAGER" });
+                values: new object[] { "b16d5f56-9d3b-4b23-810b-337e8e07ec0e", "37bccd01-d902-407e-88ba-5e871808e364", "Manager", "MANAGER" });
 
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "5559f9d4-9a16-47f1-b145-7a2582ea80f4", "b0837055-a7ee-430d-b513-e57af9d3b689", "Employee", "EMPLOYEE" });
+                values: new object[] { "f6564e9f-7907-4caa-b010-f5f46a3d8bc8", "cd287cc4-9d7f-4b93-b769-5ca418a0b56b", "Employee", "EMPLOYEE" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -339,11 +319,6 @@ namespace TrainingModule.Migrations
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Trainings_IdentityUserId",
-                table: "Trainings",
-                column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Updates_IdentityUserId",
                 table: "Updates",
                 column: "IdentityUserId");
@@ -374,9 +349,6 @@ namespace TrainingModule.Migrations
 
             migrationBuilder.DropTable(
                 name: "Managers");
-
-            migrationBuilder.DropTable(
-                name: "Materials");
 
             migrationBuilder.DropTable(
                 name: "Updates");

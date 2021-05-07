@@ -16,6 +16,7 @@ namespace TrainingModule.Models
         public string ManagerFirstName { get; set; }
         [Required]
         public string ManagerLastName { get; set; }
+        public string Comment { get; set; } 
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

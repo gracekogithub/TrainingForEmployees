@@ -2,8 +2,8 @@
 
     <div>
         <form method="post" asp-controller="Home" asp-action="Comment">
-            <input asp-for="PostId" type="hidden" />
-            <input asp-for="NickName" />
+            <input asp-for="FeedbackId" type="hidden" />
+            <input asp-for="Title" />
             <input asp-for="Message" />
             <span asp-validation-for="Message"></span>
             <button type="submit">Submit</button>

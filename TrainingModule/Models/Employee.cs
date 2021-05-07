@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TrainingModule.Models
 {
-    public class ITrainingRepository
+    public class Employee
     {
         [Key]
         public int EmployeeId { get; set; }
@@ -16,6 +16,7 @@ namespace TrainingModule.Models
         public string EmployeeFirstName { get; set; }
         [Required]
         public string EmployeeLastName { get; set; }
+        public string Comment { get; set; }
 
 
         [ForeignKey("IdentityUser")]

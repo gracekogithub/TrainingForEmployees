@@ -19,9 +19,11 @@ namespace TrainingModule.Models
         public string Title { get; set; }
         public string Body { get; set; }
         public byte[] File { get; set; }
-        [ForeignKey("IdentityUser")]
-        public string IdentityUserId { get; set; }
-        public IdentityUser IdentityUser { get; set; }
-        public virtual ICollection<Feedback> Feedbacks { get; set; }
+     
+        //[ForeignKey("IdentityUser")]
+        //public string IdentityUserId { get; set; }
+        //public IdentityUser IdentityUser { get; set; }
+        public ICollection<Feedback> Feedbacks { get; set; }
+       
     }
 }
