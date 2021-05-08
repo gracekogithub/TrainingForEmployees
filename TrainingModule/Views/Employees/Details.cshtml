@@ -1,0 +1,47 @@
+﻿@model TrainingModule.Models.Employee
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>
+    Details for @Html.DisplayFor(model => model.EmployeeFirstName)
+    @Html.DisplayFor(model => model.EmployeeLastName)
+</h1>
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-6">
+            <dl class="row">
+
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.Comment)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Comment)
+                </dd>
+                <dt class="col-sm-6">
+                    @Html.DisplayNameFor(model => model.IdentityUser)
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.IdentityUser.Id)
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+</div>
+
+<div>
+    @if (this.User.IsInRole("Employee"))
+     {
+        <a asp-action="Edit" asp-route-id="@Model.EmployeeId">Edit</a>
+     }
+    @if (this.User.IsInRole("Manager"))
+     {
+        <a asp-controller="Manager" asp-action="Index">Back to List</a>
+     }
+   
+</div>

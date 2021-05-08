@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
 {
-    //[Authorize(Roles = "Employee")]
+    [Authorize(Roles = "Employee, Manager")]
     public class EmployeesController : Controller
     {
         private ApplicationDbContext _context;
@@ -22,28 +23,47 @@ namespace TrainingModule.Controllers
 
         public IActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var employees = _context.Employees.Where(cu => cu.IdentityUserId == userId).ToList();
-            if (employees.Count == 0)
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employees = _context.Employees.ToList();
+            var theEmployee = employees.Where(cu => cu.IdentityUserId == currentUserId).SingleOrDefault();
+            if (employees !=null)
             {
-                return RedirectToAction(nameof(Create));
+                return RedirectToAction("Details", "Employee");
             }
             else
             {
-                return View(employees);
+                return View("Create", "Employee");
             }
         }
 
    
         public IActionResult Details(int id)
         {
-            var employee = _context.Employees.Where(e => e.EmployeeId == id).FirstOrDefault();
-            return View(employee);
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = new Employee();
+            if(this.User.IsInRole("Employee"))
+            {
+                employee = _context.Employees.Where(e => e.IdentityUserId == currentUserId).FirstOrDefault();
+            }
+            else
+            {
+                employee = _context.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            }
+            ViewBag.TrainingCategory = new SelectList(new List<string>() {"PowerPoint","PDF" });
+            if(employee.IdentityUserId==currentUserId || this.User.IsInRole("Employee"))
+            {
+                return View(employee);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpGet]
         public IActionResult Create()
         {
+            ViewBag.TrainingCategory = new SelectList(new List<string>() { "PowerPoint", "PDF" });
             return View();
         }
 
@@ -54,15 +74,17 @@ namespace TrainingModule.Controllers
  
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Employee employees)
+        public IActionResult Create(Employee employee)
         {
             try
             {
+                ViewBag.TrainingCategory = new SelectList(new List<string>() { "PowerPoint", "PDF" });
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                employees.IdentityUserId = userId;
-                _context.Employees.Add(employees);
+                employee.IdentityUserId = userId;
+                //add more method here if necessary
+                _context.Employees.Add(employee);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction($"Detail/{employee.EmployeeId}");
             }
             catch 
             {
@@ -75,18 +97,33 @@ namespace TrainingModule.Controllers
 
         public ActionResult Edit(int id)
         {
-            var employee = _context.Employees.Where(e => e.EmployeeId == id).FirstOrDefault();
-            return View(employee);
+            var employee = _context.Employees.SingleOrDefault(c => c.EmployeeId == id);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            ViewBag.TrainingCategory = new SelectList(new List<string>() { "PowerPoint", "PDF" });
+
+            if(employee.IdentityUserId==userId || this.User.IsInRole("Manager"))
+            {
+                return View(employee);
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Employee employees)
+        public IActionResult Edit(int id, Employee employee)
         {
             try
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                employees.IdentityUserId = userId;
-                _context.Employees.Update(employees);
+                var database = _context.Employees.Where(c => c.EmployeeId == employee.EmployeeId).FirstOrDefault();
+                database.EmployeeFirstName = employee.EmployeeFirstName;
+                database.EmployeeLastName = employee.EmployeeLastName;
+                database.Comment = employee.Comment;
+              
+                //_context.Employees.Update(employees);
+
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -97,29 +134,21 @@ namespace TrainingModule.Controllers
             }
 
         }
-        //public IActionResult Delete(int id)
-        //{
-        //    var data = _context.Employees.FirstOrDefault(o => o.EmployeeId == id);
-        //    _context.Employees.Remove(data);
-        //    _context.SaveChanges();
-        //    return RedirectToAction(nameof(Index));
-        //}
+        public IActionResult Delete(int id)
+        {
+            var employee = _context.Employees.FirstOrDefault(o => o.EmployeeId == id);
+            _context.Employees.Remove(employee);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Review(int id, Employee employee)
         {
-            try
-            {
- 
-                var review = _context.Employees.FindAsync(id);
-                _context.Employees.Update(employee);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var review = _context.Employees.SingleOrDefault(e => e.EmployeeId == id);
+            _context.Update(review);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
     }   
 }

@@ -2,29 +2,24 @@
 
 @{
     ViewData["Title"] = "IndexEmployee";
+    //Manager index view
+
 }
 
 <h1>Comments</h1>
-
-<p>
-
-</p>
+@using (Html.BeginForm())
+            {
+                <p>
+                    Category : @Html.DropDownList("Categroy", new SelectList(new List<string>() { "PowerPoint", "PDF" }), "Select One");
+                    <input type="submit" value="Search" />
+                </p>
+            }
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeFirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EmployeeLastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdentityUser)
-            </th>
-            <th></th>
+            <th><p>Name</p></th>
+            <th><p>Comment</p></th>
+  
         </tr>
     </thead>
     <tbody>
@@ -33,19 +28,14 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.EmployeeFirstName)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.EmployeeLastName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Comment)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdentityUser.Id)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.EmployeeId">Edit</a> 
-                    @*<a asp-action="ReviewComment" asp-route-id="@item.EmployeeId">Delete</a>*@
+                    <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId">Details</a>
+                  
                 </td>
             </tr>
         }

@@ -15,10 +15,14 @@ namespace TrainingModule.Models
     {
         [Key]
         public int TrainingId { get; set; }
-        [Required]
+       
         public string Title { get; set; }
         public string Body { get; set; }
         public byte[] File { get; set; }
+        public string Category { get; set; }
+        public int? Rate { get; set; }
+        //public string thumbnail { get; set; }
+       
      
         //[ForeignKey("IdentityUser")]
         //public string IdentityUserId { get; set; }

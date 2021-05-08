@@ -12,9 +12,9 @@ namespace TrainingModule.Models
     {
         [Key]
         public int EmployeeId { get; set; }
-        [Required]
+        [Display(Name = "First Name")]
         public string EmployeeFirstName { get; set; }
-        [Required]
+        [Display(Name = "Last Name")]
         public string EmployeeLastName { get; set; }
         public string Comment { get; set; }
 

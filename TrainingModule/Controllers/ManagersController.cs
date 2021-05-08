@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,36 +20,25 @@ namespace TrainingModule.Controllers
         {
             _context = context;
         }
- 
-        //public IActionResult Index()
-        //{
-        //    var managers = _context.Managers.ToList();
-        //    if (managers.Count == 0)
-        //    {
-        //        return RedirectToAction(nameof(Create));
-        //    }
-        //    return View(managers);
-        //}
+
 
         public IActionResult Index(int? value, Employee employees)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var manager = _context.Managers.Where(cu => cu.IdentityUserId == userId).ToList();
-            if (manager.Count == 0)
-            {
-                return RedirectToAction(nameof(Create));
-            }
-            var employee = _context.Employees.ToList();
-            
-            return View(employee);
-            
+            ViewBag.TrainingCategory = new SelectList(new List<string>() { "PowerPoint", "PDF" });
+
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var managerSignIn = _context.Managers.Where(cu => cu.IdentityUserId == currentUserId).SingleOrDefault();
+
+            return View();
         }
         public IActionResult Details(int id)
         {
-            return View();
+
+            var customer = _context.Employees.SingleOrDefault(c => c.EmployeeId == id);
+            return View(customer);
         }
 
-     
+
         public IActionResult Create()
         {
             return View();
