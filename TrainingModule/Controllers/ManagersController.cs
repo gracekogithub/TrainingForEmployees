@@ -24,11 +24,15 @@ namespace TrainingModule.Controllers
 
         public IActionResult Index(int? value, Employee employees)
         {
-            ViewBag.TrainingCategory = new SelectList(new List<string>() { "PowerPoint", "PDF" });
+            //ViewBag.TrainingCategory = new SelectList(new List<string>() { "PowerPoint", "PDF" });
 
             var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var managerSignIn = _context.Managers.Where(cu => cu.IdentityUserId == currentUserId).SingleOrDefault();
-
+            if (managerSignIn == null)
+            {
+                return View("Create");
+            }
+            var list = _context.Employees.ToList();
             return View();
         }
         public IActionResult Details(int id)
@@ -41,6 +45,7 @@ namespace TrainingModule.Controllers
 
         public IActionResult Create()
         {
+            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -50,7 +55,7 @@ namespace TrainingModule.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Manager manager)
         {
-            try
+            if (ModelState.IsValid)
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 manager.IdentityUserId = userId;
@@ -58,38 +63,33 @@ namespace TrainingModule.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return View();
-            }
+            return View("Index");
             //ViewBag.Products = new SelectList(product.Name, "Name", "Name");
         }
       
 
-        public ActionResult Edit(int id)
+    
+      
+
+        public IActionResult Edit(int? id)
         {
-            var manager = _context.Managers.Where(e => e.ManagerId == id).FirstOrDefault();
-            return View(manager);
+            var employee = _context.Employees.Where(e => e.EmployeeId == id).FirstOrDefault();
+            return View(employee);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Manager manager)
+        public IActionResult Edit(int id, Employee employee)
         {
             try
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                manager.IdentityUserId = userId;
-                _context.Managers.Update(manager);
+                _context.Employees.Update(employee);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                Console.WriteLine("Error");
                 return View();
             }
-
         }
         public IActionResult Delete(int id)
         {

@@ -11,10 +11,10 @@ namespace TrainingModule.ViewModels
     {
         public int FeedbackId { get; set; }
      
-        public string Title { get; set; }
+        public string Author { get; set; }
    
         public string Message { get; set; }
 
-        public List<Feedback> Feedbacks { get; set; }
+        public List<Comment> Feedbacks { get; set; }
     }
 }

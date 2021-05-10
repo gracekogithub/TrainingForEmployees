@@ -6,14 +6,14 @@
 
 }
 
-<h1>Comments</h1>
+@*<h1>Comments</h1>
 @using (Html.BeginForm())
             {
                 <p>
                     Category : @Html.DropDownList("Categroy", new SelectList(new List<string>() { "PowerPoint", "PDF" }), "Select One");
                     <input type="submit" value="Search" />
                 </p>
-            }
+            }*@
 <table class="table">
     <thead>
         <tr>
@@ -30,9 +30,9 @@
                     @Html.DisplayFor(modelItem => item.EmployeeFirstName)
                     @Html.DisplayFor(modelItem => item.EmployeeLastName)
                 </td>
-                <td>
+                @*<td>
                     @Html.DisplayFor(modelItem => item.Comment)
-                </td>
+                </td>*@
                 <td>
                     <a asp-controller="Employee" asp-action="Details" asp-route-id="@item.EmployeeId">Details</a>
                   

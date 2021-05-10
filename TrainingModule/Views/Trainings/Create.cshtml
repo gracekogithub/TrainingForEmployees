@@ -36,10 +36,7 @@
 </div>
 
 
-@using (Html.BeginForm("Index",
-                    "Training",
-                    FormMethod.Post,
-                    new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Index", "Training", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <label for="file">Upload Image:</label>
     <input type="file" name="file" id="file" />

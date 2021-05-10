@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TrainingModule.Data;
 using TrainingModule.Models;
@@ -14,19 +15,25 @@ using TrainingModule.ViewModels;
 namespace TrainingModule.Controllers
 {
     //[Authorize(Roles = "Employee")]
-    public class FeedbacksController : Controller
+    public class CommentsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public FeedbacksController(ApplicationDbContext context)
+        public CommentsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var post = _context.Feedbacks.Include(a => a.Training);
-            return View(await post.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var employee = _context.Employees.Where(a => a.IdentityUserId==userId).FirstOrDefault();
+            if (employee == null)
+            {
+                return View("Create");
+            }
+            var posts = _context.Posts.Where(p => p.Training.TrainingId == employee.EmployeeId).ToList();
+            return View(posts);
         }
 
 
@@ -37,9 +44,9 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var feedback = await _context.Feedbacks
-                .Include(a => a.Training)
-                .FirstOrDefaultAsync(m => m.FeedbackId == id);
+            var feedback = await _context.Employees
+                .Include(a => a.IdentityUser)
+                .FirstOrDefaultAsync(m => m.EmployeeId == id);
             if (feedback == null)
             {
                 return NotFound();
@@ -57,7 +64,7 @@ namespace TrainingModule.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Feedback feedback)
+        public async Task<IActionResult> Create(Comment feedback)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +72,7 @@ namespace TrainingModule.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PostId"] = new SelectList(_context.Trainings, "Id", "Id", feedback.FeedbackId);
+            ViewData["PostId"] = new SelectList(_context.Trainings, "Id", "Id", feedback.Id);
             return View(feedback);
         }
 
@@ -77,21 +84,21 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var feedback = await _context.Feedbacks.FindAsync(id);
-            if (feedback == null)
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
             {
                 return NotFound();
             }
-            ViewData["PostId"] = new SelectList(_context.Trainings, "Id", "Id", feedback.FeedbackId);
-            return View(feedback);
+            ViewData["PostId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUser);
+            return View(employee);
         }
 
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Feedback feedback)
+        public async Task<IActionResult> Edit(int id, Employee employee)
         {
-            if (id != feedback.FeedbackId)
+            if (id != employee.EmployeeId)
             {
                 return NotFound();
             }
@@ -100,12 +107,12 @@ namespace TrainingModule.Controllers
             {
                 try
                 {
-                    _context.Update(feedback);
+                    _context.Update(employee);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!FeedbackExists(feedback.FeedbackId))
+                    if (!FeedbackExists(employee.EmployeeId))
                     {
                         return NotFound();
                     }
@@ -116,12 +123,12 @@ namespace TrainingModule.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PostId"] = new SelectList(_context.Trainings, "Id", "Id", feedback.FeedbackId);
-            return View(feedback);
+            ViewData["IndentityUserId"] = new SelectList(_context.Users, "Id", "Id", employee.IdentityUserId);
+            return View(employee);
         }
         private bool FeedbackExists(int id)
         {
-            return _context.Feedbacks.Any(f => f.FeedbackId == id);
+            return _context.Comments.Any(f => f.Id == id);
         }
 
 
@@ -132,26 +139,28 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var articleComment = await _context.Feedbacks
-                .Include(a => a.Training)
-                .FirstOrDefaultAsync(m => m.FeedbackId == id);
-            if (articleComment == null)
+            var employee = await _context.Employees
+                .Include(a => a.IdentityUser)
+                .FirstOrDefaultAsync(m => m.EmployeeId == id);
+            if (employee == null)
             {
                 return NotFound();
             }
 
-            return View(articleComment);
+            return View(employee);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var feedback = await _context.Feedbacks.FindAsync(id);
-            _context.Feedbacks.Remove(feedback);
+            var employee = await _context.Employees.FindAsync(id);
+            _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -159,19 +168,21 @@ namespace TrainingModule.Controllers
         {
             
             var message = post.Message;
+            var author = post.Author;
             var postId = post.FeedbackId;
           
 
-            Feedback feedback = new Feedback()
+            Comment feedback = new Comment()
             {
-                FeedbackId = postId,
+                Id = postId,
+                Author= author,
                 Message = message,
                 Created = DateTime.Now
             };
-            _context.Feedbacks.Add(feedback);
+            _context.Comments.Add(feedback);
             _context.SaveChanges();
 
-            return RedirectToAction("Details", "Articles", new{ id = postId});
+            return RedirectToAction("Details", "Messages", new{ id = postId});
         }
     }
 }

@@ -1,0 +1,15 @@
+﻿<br />
+<br/>
+@using (Html.BeginForm("SaveImages","Trainings", FormMethod.Post, new {enctype="multipart/form-data"}))
+ {
+<div>
+    @Html.TextBox("UploadeImage", "", new { type = "File" })
+    <input type="submit" value="Upload" />
+    @{
+        if (ViewBag.Message != null)
+        {
+            @ViewBag.Message
+        }
+    }
+</div>
+  }

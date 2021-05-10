@@ -21,13 +21,8 @@ namespace TrainingModule.Models
         public byte[] File { get; set; }
         public string Category { get; set; }
         public int? Rate { get; set; }
-        //public string thumbnail { get; set; }
        
-     
-        //[ForeignKey("IdentityUser")]
-        //public string IdentityUserId { get; set; }
-        //public IdentityUser IdentityUser { get; set; }
-        public ICollection<Feedback> Feedbacks { get; set; }
+        public ICollection<Comment> Comments { get; set; }
        
     }
 }

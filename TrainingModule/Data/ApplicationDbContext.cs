@@ -20,8 +20,9 @@ namespace TrainingModule.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<Update> Updates { get; set; }
-        public DbSet<Feedback> Feedbacks { get; set; }
-
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Image> Images { get; set; }
 
 
 

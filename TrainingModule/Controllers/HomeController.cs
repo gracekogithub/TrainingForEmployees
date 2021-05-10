@@ -1,4 +1,4 @@
-﻿using Blog.Data.Repository;
+﻿
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,13 +23,13 @@ namespace TrainingModule.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private IRepository _repo;
+      
      
 
-        public HomeController(ILogger<HomeController> logger, IRepository repo )
+        public HomeController(ILogger<HomeController> logger )
         {
             _logger = logger;
-            _repo = repo;
+          
         }
         public IActionResult Index()
         {

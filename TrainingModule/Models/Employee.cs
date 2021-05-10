@@ -16,7 +16,7 @@ namespace TrainingModule.Models
         public string EmployeeFirstName { get; set; }
         [Display(Name = "Last Name")]
         public string EmployeeLastName { get; set; }
-        public string Comment { get; set; }
+
 
 
         [ForeignKey("IdentityUser")]

@@ -120,7 +120,7 @@ namespace TrainingModule.Controllers
                 var database = _context.Employees.Where(c => c.EmployeeId == employee.EmployeeId).FirstOrDefault();
                 database.EmployeeFirstName = employee.EmployeeFirstName;
                 database.EmployeeLastName = employee.EmployeeLastName;
-                database.Comment = employee.Comment;
+                //database.Comment = employee.Comment;
               
                 //_context.Employees.Update(employees);
 

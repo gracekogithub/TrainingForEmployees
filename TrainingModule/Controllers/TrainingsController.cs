@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Net.Http.Headers;
 using TrainingModule.ViewModels;
 using ExcelDataReader;
+
 using Grpc.Core;
 
 namespace TrainingModule.Controllers
@@ -29,7 +30,8 @@ namespace TrainingModule.Controllers
 
         public IActionResult Index(int? id)
         {
-            var training = _context.Trainings.ToList();
+            List <Training> training = _context.Trainings.ToList();
+            
             return View(training);
         }
         [HttpPost]
@@ -65,24 +67,28 @@ namespace TrainingModule.Controllers
                 return trainings;
             }
         }
-        public IActionResult Save(Training material, IFormFile photo)
+        [HttpGet]
+        public IActionResult SaveImages()
         {
-            if (photo == null || photo.Length == 0)
+            return View();
+        }
+        [HttpPost]
+        public IActionResult SaveImages(/*UploadImagesVM uplodvm, */IFormFile uploadedImage)
+        {
+            if (uploadedImage.Length>0)
             {
-                return Content("File not selected");
+                string ImageFileName = Path.GetFileName(uploadedImage.FileName);
+
+                string FolderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", ImageFileName);
+                var stream = new FileStream(FolderPath, FileMode.Create);
+                uploadedImage.CopyToAsync(stream);
             }
-            else
-            {
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images", photo.FileName);
-                var stream = new FileStream(path, FileMode.Create);
-                photo.CopyToAsync(stream);
+           
                 //material.File = photo.FileName;
 
-            }
-            ViewBag.material = material;
-            _context.Trainings.Add(material);
-            _context.SaveChanges();
-            return View("Create");
+            
+            ViewBag.Message = "File loaded Sucessfully";
+            return View();
         }
 
         public IActionResult Create()
@@ -102,10 +108,10 @@ namespace TrainingModule.Controllers
             {
                 return NotFound();
             }
-            feed.FeedbackId = id.Value;
-            feed.Title = tr.Title;
-            var comments = _context.Feedbacks.Where(d => d.TrainingId.Equals(id.Value)).ToList();
-            feed.Feedbacks = comments;
+            //feed.FeedbackId = id.Value;
+            //feed.Author = tr.Author;
+            //var comments = _context.Comments.Where(d => d.TrainingId.Equals(id.Value)).ToList();
+            //feed.Feedbacks = comments;
 
             return View(feed);
         }
@@ -126,22 +132,22 @@ namespace TrainingModule.Controllers
                 return View();
             }
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult UploadFile(Training training)
-        {
-            try
-            {
-                _context.Trainings.Add(training);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return View();
-            }
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult UploadFile(Training training)
+        //{
+        //    try
+        //    {
+        //        _context.Trainings.Add(training);
+        //        _context.SaveChanges();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Console.WriteLine(e);
+        //        return View();
+        //    }
+        //}
        
 
         public ActionResult Edit(int id)
