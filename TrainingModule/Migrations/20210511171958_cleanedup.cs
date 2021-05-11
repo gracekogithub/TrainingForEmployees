@@ -2,7 +2,7 @@
 
 namespace TrainingModule.Migrations
 {
-    public partial class addedimagefileforIfileform : Migration
+    public partial class cleanedup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

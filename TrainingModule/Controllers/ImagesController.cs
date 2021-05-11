@@ -58,8 +58,6 @@ namespace TrainingModule.Controllers
         }
 
         // POST: Images/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ImageId,Title,ImageFile")] Image image)
@@ -102,8 +100,6 @@ namespace TrainingModule.Controllers
         }
 
         // POST: Images/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ImageId,Title,ImageName")] Image image)
@@ -117,6 +113,7 @@ namespace TrainingModule.Controllers
             {
                 try
                 {
+                    //
                     string wwwRootPath = _hostEnvironment.WebRootPath;
                     string fileName = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
                     string extension = Path.GetExtension(image.ImageFile.FileName);
@@ -126,7 +123,7 @@ namespace TrainingModule.Controllers
                     {
                         await image.ImageFile.CopyToAsync(fileStream);
                     }
-
+                    //
                     _context.Update(image);
                     await _context.SaveChangesAsync();
                 }

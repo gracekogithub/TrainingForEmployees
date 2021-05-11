@@ -14,9 +14,8 @@
 
   <ItemGroup>
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="GleamTech.FileUltimate" Version="7.9.6" />
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.51.0.2294" />
-    <PackageReference Include="Grpc.Core" Version="2.37.1" />
-    <PackageReference Include="MailKit" Version="2.11.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.5" />
@@ -36,8 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Repository\" />
-    <Folder Include="Views\Comments\" />
     <Folder Include="wwwroot\Images\" />
     <Folder Include="wwwroot\files\" />
   </ItemGroup>

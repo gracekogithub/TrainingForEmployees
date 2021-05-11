@@ -10,22 +10,22 @@ using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
 {
-    public class TrainingsController : Controller
+    public class ReviewersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TrainingsController(ApplicationDbContext context)
+        public ReviewersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Trainings
+        // GET: Reviewers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Trainings.ToListAsync());
+            return View(await _context.Reviewers.ToListAsync());
         }
 
-        // GET: Trainings/Details/5
+        // GET: Reviewers/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var training = await _context.Trainings
-                .FirstOrDefaultAsync(m => m.TrainingId == id);
-            if (training == null)
+            var reviewer = await _context.Reviewers
+                .FirstOrDefaultAsync(m => m.ReviewerId == id);
+            if (reviewer == null)
             {
                 return NotFound();
             }
 
-            return View(training);
+            return View(reviewer);
         }
 
-        // GET: Trainings/Create
+        // GET: Reviewers/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Trainings/Create
+        // POST: Reviewers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrainingId,Title,Name")] Training training)
+        public async Task<IActionResult> Create([Bind("ReviewerId,Name,Message")] Reviewer reviewer)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(training);
+                _context.Add(reviewer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(training);
+            return View(reviewer);
         }
 
-        // GET: Trainings/Edit/5
+        // GET: Reviewers/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var training = await _context.Trainings.FindAsync(id);
-            if (training == null)
+            var reviewer = await _context.Reviewers.FindAsync(id);
+            if (reviewer == null)
             {
                 return NotFound();
             }
-            return View(training);
+            return View(reviewer);
         }
 
-        // POST: Trainings/Edit/5
+        // POST: Reviewers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TrainingId,Title,Name")] Training training)
+        public async Task<IActionResult> Edit(int id, [Bind("ReviewerId,Name,Message")] Reviewer reviewer)
         {
-            if (id != training.TrainingId)
+            if (id != reviewer.ReviewerId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace TrainingModule.Controllers
             {
                 try
                 {
-                    _context.Update(training);
+                    _context.Update(reviewer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TrainingExists(training.TrainingId))
+                    if (!ReviewerExists(reviewer.ReviewerId))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace TrainingModule.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(training);
+            return View(reviewer);
         }
 
-        // GET: Trainings/Delete/5
+        // GET: Reviewers/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var training = await _context.Trainings
-                .FirstOrDefaultAsync(m => m.TrainingId == id);
-            if (training == null)
+            var reviewer = await _context.Reviewers
+                .FirstOrDefaultAsync(m => m.ReviewerId == id);
+            if (reviewer == null)
             {
                 return NotFound();
             }
 
-            return View(training);
+            return View(reviewer);
         }
 
-        // POST: Trainings/Delete/5
+        // POST: Reviewers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var training = await _context.Trainings.FindAsync(id);
-            _context.Trainings.Remove(training);
+            var reviewer = await _context.Reviewers.FindAsync(id);
+            _context.Reviewers.Remove(reviewer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TrainingExists(int id)
+        private bool ReviewerExists(int id)
         {
-            return _context.Trainings.Any(e => e.TrainingId == id);
+            return _context.Reviewers.Any(e => e.ReviewerId == id);
         }
     }
 }

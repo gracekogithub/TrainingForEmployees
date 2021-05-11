@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TrainingModule.Models.Image>
+﻿@model IEnumerable<TrainingModule.Models.Training>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,7 +16,7 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageName)
+                @Html.DisplayNameFor(model => model.UploadFile)
             </th>
             <th></th>
         </tr>
@@ -29,12 +29,12 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ImageName)
+                    @Html.DisplayFor(modelItem => item.UploadFile)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.ImageId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ImageId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.ImageId">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.TrainingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TrainingId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TrainingId">Delete</a>
                 </td>
             </tr>
         }

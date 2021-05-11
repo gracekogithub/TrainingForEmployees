@@ -24,17 +24,27 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="YoutubeIndex">Video</a>
                         </li>
-                   
-                       
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Trainings" asp-action="Index">Training</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Employees" asp-action="Index">User</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reviewers" asp-action="Index">Comment</a>
+                        </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Updates" asp-action="Index">Newsletter</a>
                         </li>
-                        @*<li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Comments" asp-action="Create">Comments</a>
-                        </li>*@
+                        @if (this.User.IsInRole("Manager"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Updates" asp-action="Create">Create Newletter</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Trainings" asp-action="Index">Training</a>
+                        </li>
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

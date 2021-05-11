@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
@@ -13,16 +14,20 @@ namespace TrainingModule.Models
 {
     public class Training
     {
-        [Key]
+      
         public int TrainingId { get; set; }
-       
+        [Required]
         public string Title { get; set; }
-        public string Body { get; set; }
-        public byte[] File { get; set; }
-        public string Category { get; set; }
-        public int? Rate { get; set; }
+        [DisplayName("Upload Name")]
+        public string Name { get; set; }
+        [NotMapped]
+        [DisplayName("File")]
+        public IFormFile UploadFile { get; set; }
        
-        public ICollection<Comment> Comments { get; set; }
+
+      
+        public virtual List<Reviewer> Reviewers { get; set; }
+        public virtual Material Material { get; set; }
        
     }
 }

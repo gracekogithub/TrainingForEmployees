@@ -1,4 +1,5 @@
 
+using GleamTech.AspNet.Core;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,8 +40,8 @@ namespace TrainingOne
             services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
                 
             services.AddDistributedMemoryCache();
-            services.Configure<SmtpSettings>(Configuration.GetSection("SmtpSettings"));
 
+            services.AddSession();
             services.AddDbContext<ApplicationDbContext>(options =>
               options.UseSqlServer(
                   Configuration.GetConnectionString("DefaultConnection")));
@@ -56,7 +57,8 @@ namespace TrainingOne
             services.AddControllersWithViews();
          
 
-            services.AddMvc();
+            services.AddMvc().AddSessionStateTempDataProvider();
+            services.AddSession();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TrainingGuide", Version = "v1" });
@@ -77,6 +79,8 @@ namespace TrainingOne
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseGleamTech();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

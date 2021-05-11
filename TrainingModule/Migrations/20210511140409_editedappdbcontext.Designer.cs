@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrainingModule.Data;
 
 namespace TrainingModule.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210511140409_editedappdbcontext")]
+    partial class editedappdbcontext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,27 +233,27 @@ namespace TrainingModule.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Employee", b =>
+            modelBuilder.Entity("TrainingModule.Models.Comment", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("EmployeeFirstName")
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EmployeeLastName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.HasKey("Id");
 
-                    b.HasKey("EmployeeId");
+                    b.HasIndex("TrainingId");
 
-                    b.HasIndex("IdentityUserId");
-
-                    b.ToTable("Employees");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Image", b =>
@@ -272,37 +274,6 @@ namespace TrainingModule.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Material", b =>
-                {
-                    b.Property<int>("MaterialId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ImageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PdfName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MaterialId");
-
-                    b.ToTable("Materials");
-                });
-
-            modelBuilder.Entity("TrainingModule.Models.MaterialDetail", b =>
-                {
-                    b.Property<int>("MaterialId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("MaterialId");
-
-                    b.ToTable("MaterialDetails");
-                });
-
             modelBuilder.Entity("TrainingModule.Models.Reviewer", b =>
                 {
                     b.Property<int>("ReviewerId")
@@ -310,23 +281,13 @@ namespace TrainingModule.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TrainingsTrainingId")
-                        .HasColumnType("int");
-
                     b.HasKey("ReviewerId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("TrainingsTrainingId");
 
                     b.ToTable("Reviewers");
 
@@ -345,15 +306,27 @@ namespace TrainingModule.Migrations
                         });
                 });
 
+            modelBuilder.Entity("TrainingModule.Models.ReviewerTraining", b =>
+                {
+                    b.Property<int>("TrainingId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ReviewerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TrainingId", "ReviewerId");
+
+                    b.HasIndex("ReviewerId");
+
+                    b.ToTable("ReviewerTrainings");
+                });
+
             modelBuilder.Entity("TrainingModule.Models.Training", b =>
                 {
                     b.Property<int>("TrainingId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("MaterialId")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -363,8 +336,6 @@ namespace TrainingModule.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("TrainingId");
-
-                    b.HasIndex("MaterialId");
 
                     b.ToTable("Trainings");
 
@@ -393,7 +364,28 @@ namespace TrainingModule.Migrations
 
                     b.HasKey("TrainingId");
 
-                    b.ToTable("TrainingDetails");
+                    b.ToTable("TrainingDetail");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.TrainingFile", b =>
+                {
+                    b.Property<int>("TrainingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageBody")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TrainingId");
+
+                    b.ToTable("TrainingFiles");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Update", b =>
@@ -422,6 +414,29 @@ namespace TrainingModule.Migrations
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("Updates");
+                });
+
+            modelBuilder.Entity("TrainingModule.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("IdentityUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserFirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserLastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.HasIndex("IdentityUserId");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -475,55 +490,41 @@ namespace TrainingModule.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Employee", b =>
+            modelBuilder.Entity("TrainingModule.Models.Comment", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
-                        .WithMany()
-                        .HasForeignKey("IdentityUserId");
-
-                    b.Navigation("IdentityUser");
-                });
-
-            modelBuilder.Entity("TrainingModule.Models.MaterialDetail", b =>
-                {
-                    b.HasOne("TrainingModule.Models.Material", "Material")
-                        .WithMany()
-                        .HasForeignKey("MaterialId")
+                    b.HasOne("TrainingModule.Models.Training", "Trainings")
+                        .WithMany("Comments")
+                        .HasForeignKey("TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Material");
-                });
-
-            modelBuilder.Entity("TrainingModule.Models.Reviewer", b =>
-                {
-                    b.HasOne("TrainingModule.Models.Employee", "Employee")
-                        .WithMany("Reviewers")
-                        .HasForeignKey("EmployeeId");
-
-                    b.HasOne("TrainingModule.Models.Training", "Trainings")
-                        .WithMany("Reviewers")
-                        .HasForeignKey("TrainingsTrainingId");
-
-                    b.Navigation("Employee");
 
                     b.Navigation("Trainings");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Training", b =>
+            modelBuilder.Entity("TrainingModule.Models.ReviewerTraining", b =>
                 {
-                    b.HasOne("TrainingModule.Models.Material", "Material")
-                        .WithMany("Trainings")
-                        .HasForeignKey("MaterialId");
+                    b.HasOne("TrainingModule.Models.Reviewer", "Reviewer")
+                        .WithMany("ReviewerTrainings")
+                        .HasForeignKey("ReviewerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Material");
+                    b.HasOne("TrainingModule.Models.Training", "Training")
+                        .WithMany("ReviewerTrainings")
+                        .HasForeignKey("TrainingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Reviewer");
+
+                    b.Navigation("Training");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.TrainingDetail", b =>
                 {
                     b.HasOne("TrainingModule.Models.Training", "Training")
-                        .WithMany()
-                        .HasForeignKey("TrainingId")
+                        .WithOne("TrainingDetail")
+                        .HasForeignKey("TrainingModule.Models.TrainingDetail", "TrainingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -539,19 +540,27 @@ namespace TrainingModule.Migrations
                     b.Navigation("IdentityUser");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Employee", b =>
+            modelBuilder.Entity("TrainingModule.Models.User", b =>
                 {
-                    b.Navigation("Reviewers");
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
+                        .WithMany()
+                        .HasForeignKey("IdentityUserId");
+
+                    b.Navigation("IdentityUser");
                 });
 
-            modelBuilder.Entity("TrainingModule.Models.Material", b =>
+            modelBuilder.Entity("TrainingModule.Models.Reviewer", b =>
                 {
-                    b.Navigation("Trainings");
+                    b.Navigation("ReviewerTrainings");
                 });
 
             modelBuilder.Entity("TrainingModule.Models.Training", b =>
                 {
-                    b.Navigation("Reviewers");
+                    b.Navigation("Comments");
+
+                    b.Navigation("ReviewerTrainings");
+
+                    b.Navigation("TrainingDetail");
                 });
 #pragma warning restore 612, 618
         }
