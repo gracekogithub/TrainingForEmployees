@@ -19,15 +19,16 @@ namespace TrainingModule.Models
         [Required]
         public string Title { get; set; }
         [DisplayName("Upload Name")]
-        public string Name { get; set; }
+        public string Content { get; set; }
         [NotMapped]
         [DisplayName("File")]
         public IFormFile UploadFile { get; set; }
-       
 
-      
-        public virtual List<Reviewer> Reviewers { get; set; }
-        public virtual Material Material { get; set; }
-       
+        public ICollection<ReviewerTraining> ReviewerTrainings { get; set; }
+
+        [ForeignKey("Material")]
+        public int MaterialId { get; set; }
+        public virtual List<Material> Materials { get; set; }
+        public virtual TrainingDetail TrainingDetail { get; set; }
     }
 }

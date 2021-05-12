@@ -11,11 +11,11 @@ using TrainingModule.ViewModel;
 
 namespace TrainingModule.Controllers
 {
-    public class TrainingsController : Controller
+    public class TestController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public TrainingsController(ApplicationDbContext context)
+        public TestController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -114,7 +114,9 @@ namespace TrainingModule.Controllers
             return View();
         }
 
-  
+        // POST: Trainings/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("TrainingId,Title,Content")] Training training)
@@ -144,6 +146,9 @@ namespace TrainingModule.Controllers
             return View(training);
         }
 
+        // POST: Trainings/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TrainingId,Title,Content")] Training training)
@@ -176,6 +181,34 @@ namespace TrainingModule.Controllers
             return View(training);
         }
 
+        // GET: Trainings/Delete/5
+        public IActionResult Delete(TrainingVM train)
+        {
+            if (train == null)
+            {
+                return NotFound();
+            }
+
+            var training = _context.Trainings
+                .FirstOrDefault();
+            if (training == null)
+            {
+                return NotFound();
+            }
+
+            return View(training);
+        }
+
+        // POST: Trainings/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var training = await _context.Trainings.FindAsync(id);
+            _context.Trainings.Remove(training);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         private bool TrainingExists(int id)
         {
@@ -220,13 +253,17 @@ namespace TrainingModule.Controllers
             return RedirectToAction(nameof(TrainingAction), new { @id = trainingReviewVM.ReviewerTraining.TrainingId });
         }
 
-        
-        public IActionResult Delete(int id)
+        [HttpPost]
+        public IActionResult Remove(int authorId, TrainingReviewVM bookAuthorVM)
         {
-            var data = _context.Trainings.FirstOrDefault(o => o.TrainingId == id);
-            _context.Trainings.Remove(data);
+            int bookId = bookAuthorVM.Training.TrainingId;
+            ReviewerTraining bookAuthor = _context.ReviewerTrainings.FirstOrDefault(
+                u => u.TrainingId == authorId && u.TrainingId == bookId);
+
+            _context.ReviewerTrainings.Remove(bookAuthor);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(TrainingAction), new { @id = bookId });
         }
+
     }
 }

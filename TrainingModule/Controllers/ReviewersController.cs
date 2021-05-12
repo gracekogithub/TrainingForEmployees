@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TrainingModule.Data;
 using TrainingModule.Models;
+using TrainingModule.ViewModel;
 
 namespace TrainingModule.Controllers
 {
@@ -20,9 +21,11 @@ namespace TrainingModule.Controllers
         }
 
         // GET: Reviewers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Reviewers.ToListAsync());
+            List<Reviewer> trainings = _context.Reviewers.Include(u => u.ReviewerTrainings)
+                .ThenInclude(u => u.Training).ToList();
+            return View(trainings);
         }
 
         // GET: Reviewers/Details/5
@@ -33,7 +36,8 @@ namespace TrainingModule.Controllers
                 return NotFound();
             }
 
-            var reviewer = await _context.Reviewers
+            var reviewer = await _context.Reviewers.Include(u => u.ReviewerTrainings)
+                .ThenInclude(u => u.Training)
                 .FirstOrDefaultAsync(m => m.ReviewerId == id);
             if (reviewer == null)
             {
@@ -44,25 +48,42 @@ namespace TrainingModule.Controllers
         }
 
         // GET: Reviewers/Create
-        public IActionResult Create()
+        public IActionResult Create(int id)
         {
-            return View();
+            TrainingReviewVM obj = new TrainingReviewVM
+            {
+                ReviewerTrainingList = _context.ReviewerTrainings.Include(u => u.Training).Include(u => u.Reviewer)
+                                    .Where(u => u.ReviewerId == id).ToList(),
+                ReviewerTraining = new ReviewerTraining()
+                {
+                    ReviewerId = id
+                },
+                Reviewer = _context.Reviewers.FirstOrDefault(u => u.ReviewerId == id)
+            };
+            List<int> guide = obj.ReviewerTrainingList.Select(u => u.TrainingId).ToList();
+            var tempList = _context.Reviewers.Where(u => !guide.Contains(u.ReviewerId)).ToList();
+            obj.ReviewList = tempList.Select(i => new SelectListItem
+            {
+                Text = i.Name,
+                Value = i.ReviewerId.ToString()
+            });
+
+            return View(obj);
         }
 
-        // POST: Reviewers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReviewerId,Name,Message")] Reviewer reviewer)
+        public async Task<IActionResult> Create([Bind("ReviewerId,Name,Message,Created")] TrainingReviewVM trainingReviewVM)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(reviewer);
+                
+                _context.ReviewerTrainings.Add(trainingReviewVM.ReviewerTraining);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(reviewer);
+            return RedirectToAction(nameof(Create), new { @id = trainingReviewVM.ReviewerTraining.ReviewerId });
         }
 
         // GET: Reviewers/Edit/5
@@ -86,7 +107,7 @@ namespace TrainingModule.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReviewerId,Name,Message")] Reviewer reviewer)
+        public async Task<IActionResult> Edit(int id, [Bind("ReviewerId,Name,Message,Created")] Reviewer reviewer)
         {
             if (id != reviewer.ReviewerId)
             {
@@ -97,7 +118,7 @@ namespace TrainingModule.Controllers
             {
                 try
                 {
-                    _context.Update(reviewer);
+                    _context.Reviewers.Update(reviewer);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

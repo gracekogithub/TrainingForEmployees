@@ -18,19 +18,20 @@ namespace TrainingModule.Data
         }
 
 
-        public DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Manager> Managers { get; set; }
+
+        public virtual DbSet<Update> Updates { get; set; }
+        public virtual DbSet<Reviewer> Reviewers { get; set; }
+
+
+        public virtual DbSet<Material> Materials { get; set; }
+        public virtual DbSet<Image> Images { get; set; }
+
+        public virtual DbSet<ReviewerTraining> ReviewerTrainings { get; set; }
+        public virtual DbSet<Training> Trainings { get; set; }
    
-        public DbSet<Update> Updates { get; set; }
-        public DbSet<Reviewer> Reviewers { get; set; }
-
-
-        public DbSet<Material> Materials { get; set; }
-        public DbSet<Image> Images { get; set; }
- 
-
-        public DbSet<Training> Trainings { get; set; }
-        public DbSet<TrainingDetail> TrainingDetails { get; set; }
-        public DbSet<MaterialDetail> MaterialDetails { get; set; }
+    
 
 
 
@@ -56,8 +57,8 @@ namespace TrainingModule.Data
                 });
             modelBuilder.Entity<Training>()
            .HasData(
-                   new Training { TrainingId = 1, Title = "Hematology", Name = "Hematology AML" },
-                   new Training { TrainingId = 2, Title = "Chemistry", Name = "Chemistry hepatitis"}
+                   new Training { TrainingId = 1, Title = "Hematology", Content = "Hematology AML" },
+                   new Training { TrainingId = 2, Title = "Chemistry", Content = "Chemistry hepatitis"}
            );
             modelBuilder.Entity<Reviewer>()
           .HasData(
@@ -73,20 +74,20 @@ namespace TrainingModule.Data
             //     m.MapLeftKey("TrainingId");
             //     m.MapRightKey("ReviewerId");
             // });
-           
+
             //many to may relationship for multiple trainer
 
 
-            //modelBuilder.Entity<ReviewerTraining>()
-            // .HasKey(p => new { p.TrainingId, p.ReviewerId });
-            //modelBuilder.Entity<ReviewerTraining>()
-            //    .HasOne(p => p.Reviewer)
-            //    .WithMany(tr => tr.ReviewerTrainings)
-            //    .HasForeignKey(p => p.ReviewerId);
-            //modelBuilder.Entity<ReviewerTraining>()
-            //    .HasOne(p => p.Training)
-            //    .WithMany(mr => mr.ReviewerTrainings)
-            //    .HasForeignKey(p => p.TrainingId);
+            modelBuilder.Entity<ReviewerTraining>()
+             .HasKey(p => new { p.TrainingId, p.ReviewerId });
+            modelBuilder.Entity<ReviewerTraining>()
+                .HasOne(p => p.Reviewer)
+                .WithMany(tr => tr.ReviewerTrainings)
+                .HasForeignKey(p => p.ReviewerId);
+            modelBuilder.Entity<ReviewerTraining>()
+                .HasOne(p => p.Training)
+                .WithMany(mr => mr.ReviewerTrainings)
+                .HasForeignKey(p => p.TrainingId);
 
         }
 

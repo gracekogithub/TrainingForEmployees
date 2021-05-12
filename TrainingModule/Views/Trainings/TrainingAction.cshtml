@@ -1,0 +1,63 @@
+﻿@model TrainingModule.ViewModel.TrainingReviewVM
+<h1>Create</h1>
+
+<h4>Training</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Training.TrainingId" class="control-label" type="hidden"></label>
+                <input type="hidden" asp-for="Training.TrainingId" />
+                <input type="hidden" asp-for="ReviewerTraining.TrainingId" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Training.Title" class="control-label"></label>
+                <input asp-for="Training.Title" class="form-control" />
+                <span asp-validation-for="Training.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Training.Content" class="control-label"></label>
+                <input asp-for="Training.Content" class="form-control" />
+                <span asp-validation-for="Training.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReviewerTraining.Reviewer.Name" class="control-label"></label>
+                <input asp-for="ReviewerTraining.Reviewer.Name" class="form-control" />
+                <span asp-validation-for="ReviewerTraining.Reviewer.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ReviewerTraining.ReviewerId" class="control-label" type="hidden"></label>
+                <input type="hidden" asp-for="@Model.ReviewerTraining.ReviewerId" />
+                <input type="hidden" asp-for="@Model.ReviewerTraining.ReviewerId" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.ReviewerTraining.Reviewer.Message" class="control-label"></label>
+                <input asp-for="@Model.ReviewerTraining.Reviewer.Message" class="form-control" />
+                <span asp-validation-for="@Model.ReviewerTraining.Reviewer.Message" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+@foreach (var auth in Model.ReviewerTrainingList)
+{
+
+<div class="row pb-2">
+    <div class="col-8 text-right" style="font-size:23px;">@auth.Reviewer.Name</div>
+    <div class="col-4">
+        <button asp-action="Delete" type="submit" class="btn btn-danger form-control" asp-route-authorId="@auth.ReviewerId">Remove</button>
+    </div>
+</div>}
+           
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

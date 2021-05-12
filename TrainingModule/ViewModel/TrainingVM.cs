@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using TrainingModule.Models;
 
 namespace TrainingModule.ViewModel
 {
-    public class ReviewerTrainingViewModel
+    public class TrainingVM
     {
-        public ICollection<Training> Trainings { get; set; }
-        public ICollection<Reviewer> Reviewers { get; set; }
+        public Training Training { get; set; }
+        public IEnumerable<SelectListItem> MaterialList { get; set; }
     }
 }

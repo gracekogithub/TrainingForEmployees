@@ -2,7 +2,7 @@
 
 namespace TrainingModule.Migrations
 {
-    public partial class cleanedup : Migration
+    public partial class editmaterialmodel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

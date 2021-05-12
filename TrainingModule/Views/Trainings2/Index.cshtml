@@ -34,7 +34,8 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TrainingId">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.TrainingId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TrainingId">Delete</a>
+                    <a asp-action="Delete" asp-route-id="@item.TrainingId">Delete</a> |
+                    <a asp-action="Index" asp-controller="Reviewers" asp-route-id="/Reviewers/Create">Comment</a>
                 </td>
             </tr>
         }
@@ -49,3 +50,13 @@
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <p>Acute Lyphoblastic Leukemia</p>
 <br />
+
+<asp:DataList ID="PicturesInFolder" runat="server" Width="100%" CellPadding="5">
+    <ItemTemplate>
+        <h3><asp:Label runat="server" ID="FileNameLabel" Text='<%# System.IO.Path.GetFilenameWithoutExtension(Eval("Name")) %>'></asp:Label></h3>
+
+        <asp:Image runat="server" ID="Picture" ImageUrl='<%# PictureTree.SelectedValue & Eval("Name").ToString() %>' />
+        <br /><br />
+    </ItemTemplate>
+    <AlternatingItemStyle BackColor="#E0E0E0" />
+</asp:DataList>
