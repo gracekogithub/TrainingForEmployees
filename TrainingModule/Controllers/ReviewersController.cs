@@ -71,14 +71,14 @@ namespace TrainingModule.Controllers
             return View(obj);
         }
 
-      
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ReviewerId,Name,Message,Created")] TrainingReviewVM trainingReviewVM)
         {
             if (ModelState.IsValid)
             {
-                
+
                 _context.ReviewerTrainings.Add(trainingReviewVM.ReviewerTraining);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

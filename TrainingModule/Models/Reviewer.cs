@@ -16,7 +16,7 @@ namespace TrainingModule.Models
         public string Message { get; set; }
         public DateTime Created { get; set; }
      
-        public ICollection<ReviewerTraining > ReviewerTrainings{ get; set; }
+        public virtual Training Trainings { get; set; }
         
     }
 }

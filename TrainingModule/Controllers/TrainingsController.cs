@@ -115,18 +115,18 @@ namespace TrainingModule.Controllers
         }
 
   
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TrainingId,Title,Content")] Training training)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(training);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(training);
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("TrainingId,Title,Content")] Training training)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(training);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(training);
+        //}
 
         // GET: Trainings/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -30,6 +30,7 @@ namespace TrainingModule.Data
 
         public virtual DbSet<ReviewerTraining> ReviewerTrainings { get; set; }
         public virtual DbSet<Training> Trainings { get; set; }
+        public virtual DbSet<TrainingDetail> TrainingDetails { get; set; }
    
     
 
@@ -65,29 +66,17 @@ namespace TrainingModule.Data
                   new Reviewer { ReviewerId = 1, Name = "Grace", Message = "Please write your comment for each training" },
                   new Reviewer { ReviewerId = 2, Name = "Grace", Message = "Please write your comment" }
           );
-            //modelBuilder.Entity<Training>()
-            // .HasMany(p => p.Reviewers)
-            // .WithMany(p=>p.Trainings)
-            // .Map(m =>
-            // {
-            //     m.ToTable("ReviewerTraining");
-            //     m.MapLeftKey("TrainingId");
-            //     m.MapRightKey("ReviewerId");
-            // });
-
-            //many to may relationship for multiple trainer
-
-
-            modelBuilder.Entity<ReviewerTraining>()
-             .HasKey(p => new { p.TrainingId, p.ReviewerId });
-            modelBuilder.Entity<ReviewerTraining>()
-                .HasOne(p => p.Reviewer)
-                .WithMany(tr => tr.ReviewerTrainings)
-                .HasForeignKey(p => p.ReviewerId);
-            modelBuilder.Entity<ReviewerTraining>()
-                .HasOne(p => p.Training)
-                .WithMany(mr => mr.ReviewerTrainings)
-                .HasForeignKey(p => p.TrainingId);
+           
+            //modelBuilder.Entity<ReviewerTraining>()
+            // .HasKey(p => new { p.TrainingId, p.ReviewerId });
+            //modelBuilder.Entity<ReviewerTraining>()
+            //    .HasOne(p => p.Reviewer)
+            //    .WithMany(tr => tr.ReviewerTrainings)
+            //    .HasForeignKey(p => p.ReviewerId);
+            //modelBuilder.Entity<ReviewerTraining>()
+            //    .HasOne(p => p.Training)
+            //    .WithMany(mr => mr.ReviewerTrainings)
+            //    .HasForeignKey(p => p.TrainingId);
 
         }
 

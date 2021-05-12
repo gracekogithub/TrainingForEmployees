@@ -24,11 +24,7 @@ namespace TrainingModule.Models
         [DisplayName("File")]
         public IFormFile UploadFile { get; set; }
 
-        public ICollection<ReviewerTraining> ReviewerTrainings { get; set; }
-
-        [ForeignKey("Material")]
-        public int MaterialId { get; set; }
-        public virtual List<Material> Materials { get; set; }
+        public virtual List<Reviewer> Reviewers { get; set; }
         public virtual TrainingDetail TrainingDetail { get; set; }
     }
 }

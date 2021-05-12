@@ -17,7 +17,7 @@ namespace TrainingModule.Models
         
         public string TrainingFormat { get; set; }
        
-        public virtual Training Trainings { get; set; }
+        //public virtual Training Trainings { get; set; }
 
         //public List<SelectListItem> GetAllTrainingMaterial()
         //{

@@ -20,5 +20,6 @@ namespace TrainingModule.ViewModel
         public IEnumerable<ReviewerTraining> ReviewerTrainingList { get; set; }
         
         public IEnumerable<SelectListItem> ReviewList { get; set; }
+        
     }
 }
