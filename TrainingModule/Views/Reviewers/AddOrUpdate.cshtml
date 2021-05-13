@@ -1,0 +1,76 @@
+﻿@model TrainingModule.ViewModel.ReviewVM
+@{ var title = "Create"; }
+<form method="post">
+    <div class="row p-3 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Reviewer.ReviewerId" />
+        @if (Model.Reviewer != null)
+        {
+            //edit
+            title = "Add your comments";
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Reviewer.Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Reviewer.Name" class="form-control" />
+                    <span asp-validation-for="Reviewer.Name" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Reviewer.Message"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Reviewer.Message" class="form-control" />
+                    <span asp-validation-for="Reviewer.Message" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Reviewer.Created"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Reviewer.Created" class="form-control" />
+                    <span asp-validation-for="Reviewer.Created" class="text-danger"></span>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Reviewer.TrainingId"></label>
+                </div>
+                <div class="col-8">
+                    @Html.DropDownListFor(u => u.Reviewer.TrainingId, Model.TrainingList, "--Training List--",
+                             new { @class = "form-control" })
+                    <span asp-validation-for="Reviewer.TrainingId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4 offset-4">
+                    @if (Model.Reviewer == null)
+                    {
+        <button type="submit" class="btn btn-primary form-control">Create</button> }
+                    else
+                    {
+        <button type="submit" class="btn btn-primary form-control">Update</button>}
+                </div>
+                <div class="col-4">
+                    <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+}

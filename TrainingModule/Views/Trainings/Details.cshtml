@@ -1,4 +1,4 @@
-﻿@model TrainingModule.ViewModel.TrainingReviewVM
+﻿@model TrainingModule.Models.Training
 
 @{
     ViewData["Title"] = "Details";
@@ -10,30 +10,21 @@
     <h4>Training</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Training.Title)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Training.Title)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Training.Content)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Training.Content)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Training.UploadFile)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Training.UploadFile)
-        </dd>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ReviewerTraining.Reviewer.Message)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Content)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Training.TrainingId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.TrainingId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

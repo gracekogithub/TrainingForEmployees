@@ -15,7 +15,9 @@ namespace TrainingModule.Models
         public string Name { get; set; }
         public string Message { get; set; }
         public DateTime Created { get; set; }
-     
+
+        [ForeignKey("Training")]
+        public int? TrainingId { get; set; }
         public virtual Training Trainings { get; set; }
         
     }

@@ -14,7 +14,6 @@ namespace TrainingModule.Models
 {
     public class Training
     {
-      
         public int TrainingId { get; set; }
         [Required]
         public string Title { get; set; }
@@ -25,6 +24,6 @@ namespace TrainingModule.Models
         public IFormFile UploadFile { get; set; }
 
         public virtual List<Reviewer> Reviewers { get; set; }
-        public virtual TrainingDetail TrainingDetail { get; set; }
+        //public virtual TrainingDetail TrainingDetail { get; set; }
     }
 }

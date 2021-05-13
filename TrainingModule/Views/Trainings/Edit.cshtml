@@ -1,4 +1,4 @@
-﻿@model TrainingModule.ViewModel.TrainingReviewVM
+﻿@model TrainingModule.Models.Training
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,30 +12,17 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Training.TrainingId" />
+            <input type="hidden" asp-for="TrainingId" />
             <div class="form-group">
-                <label asp-for="Training.Title" class="control-label"></label>
-                <input asp-for="Training.Title" class="form-control" />
-                <span asp-validation-for="Training.Title" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Training.Content" class="control-label"></label>
-                <input asp-for="Training.Content" class="form-control" />
-                <span asp-validation-for="Training.Content" class="text-danger"></span>
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Training.UploadFile" class="control-label"></label>
-                <input asp-for="Training.UploadFile" class="form-control" />
-                <span asp-validation-for="Training.UploadFile" class="text-danger"></span>
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            @*<h3>Comment:</h3>
-            <div class="form-group">
-                <label asp-for="@Model.ReviewerTraining.Reviewer.Message" class="control-label"></label>
-                <input asp-for="@Model.ReviewerTraining.Reviewer.Message" class="form-control" />
-                <span asp-validation-for="@Model.ReviewerTraining.Reviewer.Message" class="text-danger"></span>
-            </div>*@
-           
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

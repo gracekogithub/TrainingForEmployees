@@ -2,7 +2,7 @@
 
 namespace TrainingModule.Migrations
 {
-    public partial class editmaterialmodel : Migration
+    public partial class addedforeignkey : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

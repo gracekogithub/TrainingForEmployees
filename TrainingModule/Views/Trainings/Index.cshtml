@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Training (Hematology / Chemistry)</h1>
 
 <p>
-    <a asp-action="TrainingAction">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -17,59 +17,26 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Content)
-            </th> 
-            <th>
-                @Html.DisplayNameFor(model => model.UploadFile)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Message)
-            </th>*@
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
+@foreach (var item in Model) {
         <tr>
             <td>
-                @Html.ListBox ("Id", new selectList (item.Title, "Id","Message")
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UploadFile)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.ReviewerTrainings.Reviewers.Message)*@
-           
-            </td>
-            <td>
                 <a asp-action="Edit" asp-route-id="@item.TrainingId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.TrainingId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.TrainingId">Delete</a> |
-                <a asp-action="Index" asp-route-id="@item.TrainingId">Comment</a>
+                <a asp-controller="Reviewers" asp-action="Index">Comment</a>
             </td>
         </tr>
-        }
+}
     </tbody>
 </table>
-<h4>Feature training video: hematology</h4>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/bNlnYvjhxAU" title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p>Acute Meylonoma Leukemia</p>
-<br />
-<iframe width="560" height="315" src="https://www.youtube.com/embed/IN2MtisTzC0" title="YouTube video player" frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p>Acute Lyphoblastic Leukemia</p>
-<br />
-
-<asp:DataList ID="PicturesInFolder" runat="server" Width="100%" CellPadding="5">
-    <ItemTemplate>
-        <h3><asp:Label runat="server" ID="FileNameLabel" Text='<%# System.IO.Path.GetFilenameWithoutExtension(Eval("Name")) %>'></asp:Label></h3>
-
-        <asp:Image runat="server" ID="Picture" ImageUrl='<%# PictureTree.SelectedValue & Eval("Name").ToString() %>' />
-        <br /><br />
-    </ItemTemplate>
-    <AlternatingItemStyle BackColor="#E0E0E0" />
-</asp:DataList>

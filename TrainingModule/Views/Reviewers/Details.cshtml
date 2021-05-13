@@ -1,36 +1,79 @@
-﻿@model TrainingModule.Models.Reviewer
+﻿@model TrainingModule.ViewModel.ReviewVM
+@{ var title = "Update Details"; }
+<form method="post">
+    <div class="row p-3 border">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Reviewer.ReviewerId" />
+        @if (Model.Reviewer == null || Model.Reviewer.ReviewerId != 0)
+        {
 
-@{
-    ViewData["Title"] = "Details";
+            title = "Details";
+        }
+        <div class="col-12 border-bottom">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Reviewer.Name"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Reviewer.Name" disabled class="form-control" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Reviewer.Message"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Reviewer.Message" class="form-control" />
+                    <span asp-validation-for="Reviewer.Message" class="text-danger"></span>
+                </div>
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-4">
+                <label asp-for="Reviewer.Created"></label>
+            </div>
+            <div class="col-8">
+                <input asp-for="Reviewer.Created" class="form-control" />
+                <span asp-validation-for="Reviewer.Created" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-4">
+                <label asp-for="Reviewer.TrainingId"></label>
+            </div>
+            <div class="col-8">
+                @Html.DropDownListFor(u => u.Reviewer.TrainingId, Model.TrainingList, "--Training List--",
+                              new { @class = "form-control" })
+                <span asp-validation-for="Reviewer.TrainingId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-4 offset-4">
+                @if (Model.Reviewer == null || Model.Reviewer.ReviewerId != 0)
+                {
+    <button type="submit" class="btn btn-primary form-control">Update</button> }
+else
+{
+<button type="submit" class="btn btn-primary form-control">Create</button>}
+            </div>
+            <div class="col-4">
+                <a asp-action="Index" class="btn btn-success form-control">Back to List</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</form>
+
+
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
 }
-
-<h1>Details</h1>
-
-<div>
-    <h4>Reviewer</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Message)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Message)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ReviewerId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>

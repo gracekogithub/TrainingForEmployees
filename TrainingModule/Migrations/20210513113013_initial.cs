@@ -61,29 +61,13 @@ namespace TrainingModule.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reviewers",
-                columns: table => new
-                {
-                    ReviewerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviewers", x => x.ReviewerId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Trainings",
                 columns: table => new
                 {
                     TrainingId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MaterialId = table.Column<int>(type: "int", nullable: false)
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -261,66 +245,25 @@ namespace TrainingModule.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Materials",
+                name: "Reviewers",
                 columns: table => new
                 {
-                    MaterialId = table.Column<int>(type: "int", nullable: false)
+                    ReviewerId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    PdfName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TrainingsTrainingId = table.Column<int>(type: "int", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrainingId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Materials", x => x.MaterialId);
+                    table.PrimaryKey("PK_Reviewers", x => x.ReviewerId);
                     table.ForeignKey(
-                        name: "FK_Materials_Trainings_TrainingsTrainingId",
-                        column: x => x.TrainingsTrainingId,
-                        principalTable: "Trainings",
-                        principalColumn: "TrainingId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReviewerTraining",
-                columns: table => new
-                {
-                    ReviewerId = table.Column<int>(type: "int", nullable: false),
-                    TrainingId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReviewerTraining", x => new { x.TrainingId, x.ReviewerId });
-                    table.ForeignKey(
-                        name: "FK_ReviewerTraining_Reviewers_ReviewerId",
-                        column: x => x.ReviewerId,
-                        principalTable: "Reviewers",
-                        principalColumn: "ReviewerId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ReviewerTraining_Trainings_TrainingId",
+                        name: "FK_Reviewers_Trainings_TrainingId",
                         column: x => x.TrainingId,
                         principalTable: "Trainings",
                         principalColumn: "TrainingId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TrainingDetail",
-                columns: table => new
-                {
-                    TrainingId = table.Column<int>(type: "int", nullable: false),
-                    content = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TrainingDetail", x => x.TrainingId);
-                    table.ForeignKey(
-                        name: "FK_TrainingDetail_Trainings_TrainingId",
-                        column: x => x.TrainingId,
-                        principalTable: "Trainings",
-                        principalColumn: "TrainingId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.InsertData(
@@ -333,21 +276,12 @@ namespace TrainingModule.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Reviewers",
-                columns: new[] { "ReviewerId", "Created", "Message", "Name" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Please write your comment for each training", "Grace" },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Please write your comment", "Grace" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Trainings",
-                columns: new[] { "TrainingId", "Content", "MaterialId", "Title" },
+                columns: new[] { "TrainingId", "Content", "Title" },
                 values: new object[,]
                 {
-                    { 1, "Hematology AML", 0, "Hematology" },
-                    { 2, "Chemistry hepatitis", 0, "Chemistry" }
+                    { 1, "Hematology AML", "Hematology" },
+                    { 2, "Chemistry hepatitis", "Chemistry" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -400,14 +334,9 @@ namespace TrainingModule.Migrations
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Materials_TrainingsTrainingId",
-                table: "Materials",
-                column: "TrainingsTrainingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReviewerTraining_ReviewerId",
-                table: "ReviewerTraining",
-                column: "ReviewerId");
+                name: "IX_Reviewers_TrainingId",
+                table: "Reviewers",
+                column: "TrainingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Updates_IdentityUserId",
@@ -442,22 +371,13 @@ namespace TrainingModule.Migrations
                 name: "Managers");
 
             migrationBuilder.DropTable(
-                name: "Materials");
-
-            migrationBuilder.DropTable(
-                name: "ReviewerTraining");
-
-            migrationBuilder.DropTable(
-                name: "TrainingDetail");
+                name: "Reviewers");
 
             migrationBuilder.DropTable(
                 name: "Updates");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Reviewers");
 
             migrationBuilder.DropTable(
                 name: "Trainings");

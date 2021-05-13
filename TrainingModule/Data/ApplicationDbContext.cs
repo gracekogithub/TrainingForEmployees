@@ -17,23 +17,12 @@ namespace TrainingModule.Data
             //Database.Migrate();
         }
 
-
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Manager> Managers { get; set; }
-
         public virtual DbSet<Update> Updates { get; set; }
         public virtual DbSet<Reviewer> Reviewers { get; set; }
-
-
-        public virtual DbSet<Material> Materials { get; set; }
         public virtual DbSet<Image> Images { get; set; }
-
-        public virtual DbSet<ReviewerTraining> ReviewerTrainings { get; set; }
         public virtual DbSet<Training> Trainings { get; set; }
-        public virtual DbSet<TrainingDetail> TrainingDetails { get; set; }
-   
-    
-
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -61,12 +50,17 @@ namespace TrainingModule.Data
                    new Training { TrainingId = 1, Title = "Hematology", Content = "Hematology AML" },
                    new Training { TrainingId = 2, Title = "Chemistry", Content = "Chemistry hepatitis"}
            );
-            modelBuilder.Entity<Reviewer>()
-          .HasData(
-                  new Reviewer { ReviewerId = 1, Name = "Grace", Message = "Please write your comment for each training" },
-                  new Reviewer { ReviewerId = 2, Name = "Grace", Message = "Please write your comment" }
-          );
-           
+          //  modelBuilder.Entity<Reviewer>()
+          //.HasData(
+          //        new Reviewer { ReviewerId = 1, Name = "Grace", Message = "Please write your comment for each training" },
+          //        new Reviewer { ReviewerId = 2, Name = "Grace", Message = "Please write your comment" }
+          //);
+
+            modelBuilder.Entity<Training>().HasMany(c => c.Reviewers)
+                .WithOne(e => e.Trainings)
+                .OnDelete(DeleteBehavior.SetNull);
+
+
             //modelBuilder.Entity<ReviewerTraining>()
             // .HasKey(p => new { p.TrainingId, p.ReviewerId });
             //modelBuilder.Entity<ReviewerTraining>()
@@ -79,9 +73,20 @@ namespace TrainingModule.Data
             //    .HasForeignKey(p => p.TrainingId);
 
         }
-
-
-
+        //protected override void Seed(ApplicationDbContext context)
+        //{
+        //    Training training = new Training() { Title="Hematology 1" };
+        //    context.Trainings.Add(training);
+        //    context.Reviewers.Add(new Reviewer() { Trainings=training, Message = "first comment for Hematology 1", Created=DateTime.Now });
+        //    context.Reviewers.Add(new Reviewer() { Trainings = training, Message = "Second comment for Hwmatology 1", Created = DateTime.Now });
+        //    context.Reviewers.Add(new Reviewer()
+        //    {
+        //        Trainings = context.Trainings.Add(new Training() { Title = "Hematology 2" }),
+        //        Message = "Third Comment",
+        //        Created=DateTime.Now
+        //    });
+        //    context.SaveChanges();
+        //}
 
     }
 }
