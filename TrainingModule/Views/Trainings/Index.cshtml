@@ -22,21 +22,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TrainingId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TrainingId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TrainingId">Delete</a> |
-                <a asp-controller="Reviewers" asp-action="Index">Comment</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.TrainingId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.TrainingId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.TrainingId">Delete</a> |
+                    <a asp-controller="Reviewers" asp-action="Index">Comment</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+<h4>Feature training video: hematology</h4>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/bNlnYvjhxAU" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>Acute Meylonoma Leukemia</p>
+<br />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/IN2MtisTzC0" title="YouTube video player" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>Acute Lyphoblastic Leukemia</p>
+<br />
