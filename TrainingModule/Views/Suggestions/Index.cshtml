@@ -4,7 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Suggestion Box</h1>
+<h4>What would like to see improved on if there is anything we can improve on.</h4>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -21,9 +22,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Created)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.IdentityUser)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -39,9 +40,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Created)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.IdentityUser.Id)
-            </td>
+            </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SuggestionId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.SuggestionId">Details</a> |
