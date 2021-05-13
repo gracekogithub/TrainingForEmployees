@@ -73,6 +73,9 @@ namespace TrainingModule.Data
             //    .HasForeignKey(p => p.TrainingId);
 
         }
+
+
+        public DbSet<TrainingModule.Models.Suggestion> Suggestion { get; set; }
         //protected override void Seed(ApplicationDbContext context)
         //{
         //    Training training = new Training() { Title="Hematology 1" };
