@@ -51,6 +51,7 @@ namespace TrainingModule.Controllers
             {
                 file.CopyTo(fileStream);
                 fileStream.Flush();
+                fileStream.Close();
             }
             return Index();
         }

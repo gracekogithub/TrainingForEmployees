@@ -46,20 +46,31 @@
     </div>
     <br />
     @*need to fix the routing issue for the picture link*@
-    <h4 align-center>Click any image to post your comment.</h4>
-    <div class="row">
-       
-        <div class="column" type="button" onClick="redirectOnClick()">
-            <script>function redirectOnClick() { document.location = 'Updates/Index' }</script>
-            <img src="Images/newsletter.png" alt="newsletter" style="width:100%">
-        </div>
-        <div class="column" type="button" onClick="redirectOnClick()">
-            <script>function redirectOnClick() { document.location = 'Trainings/Index' }</script>
-            <img src="Images/training.png" alt="training" style="width:100%">
-        </div>
-        <div class="column" type="button" onClick="redirectOnClick()">
-            <script>function redirectOnClick() { document.location = 'Comments/Index' }</script>
-            <img src="Images/feedback.png" alt="feedback" style="width:100%">
+    <h4 align-center>Click an image.</h4>
+    <div class="row"> 
+        <div class="column">
+            <a href="@Url.Action("Index", "Updates")">
+                <img src="Images/newsletter.png" alt="newsletter" style="width:100%">
+                <div class="text-block">
+                    <h4>Team Updates/Newsletter</h4>
+                </div>
+            </a>
+</div>
+        <div class="column">
+            <a href="@Url.Action("Index", "Trainings")">
+                <img src="Images/training.png" alt="training" style="width:100%">
+                <div class="text-block">
+                    <h4>Training Materials</h4>
+                </div>
+            </a>
+</div>
+        <div class="column">
+            <a href="@Url.Action("Index", "Reviewers")">
+                <img src="Images/feedback.png" alt="feedback" style="width:100%">
+                <div class="text-block">
+                    <h4>Comments on Training</h4>
+                </div>
+            </a>
         </div>
     </div>
 
