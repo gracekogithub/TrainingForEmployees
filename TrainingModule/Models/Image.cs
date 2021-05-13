@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace TrainingModule.Models
 {
     public class Image
@@ -19,5 +20,6 @@ namespace TrainingModule.Models
         [NotMapped]
         [DisplayName("Upload File")]
         public IFormFile ImageFile { get; set; }
+        
     }
 }

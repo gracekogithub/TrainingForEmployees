@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,7 @@ namespace TrainingModule.Controllers
     public class ImagesController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IWebHostEnvironment _hostEnvironment = null;
 
         public ImagesController(ApplicationDbContext context, IWebHostEnvironment hostEnvironment)
         {
@@ -23,39 +25,83 @@ namespace TrainingModule.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        // GET: Images
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Images.ToListAsync());
-        }
-
-        // GET: Images/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var image = await _context.Images
-                .FirstOrDefaultAsync(m => m.ImageId == id);
-
-            var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "images", image.ImageName);
-            if (System.IO.File.Exists(imagePath))
-                System.IO.File.Delete(imagePath);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            return View(image);
-        }
-
-        // GET: Images/Create
-        public IActionResult Create()
+        public IActionResult Index()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Index(List<IFormFile> postedFiles)
+        {
+            string wwwPath = this._hostEnvironment.WebRootPath;
+            string contentPath = this._hostEnvironment.ContentRootPath;
+
+            string path = Path.Combine(this._hostEnvironment.WebRootPath, "Uploads");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            List<string> uploadedFiles = new List<string>();
+            foreach (IFormFile postedFile in postedFiles)
+            {
+                string fileName = Path.GetFileName(postedFile.FileName);
+                using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                    uploadedFiles.Add(fileName);
+                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
+                }
+            }
+
+            return View(uploadedFiles);
+        }
+
+        public IActionResult FileUpload()
+        {
+            return View();
+        }
+
+       
+
+
+
+
+
+
+        // GET: Images
+        //public async Task<IActionResult> Index()
+        //    {
+        //        return View(await _context.Images.ToListAsync());
+        //    }
+
+        //    // GET: Images/Details/5
+        //    public async Task<IActionResult> Details(int? id)
+        //    {
+        //        if (id == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        var image = await _context.Images
+        //            .FirstOrDefaultAsync(m => m.ImageId == id);
+
+        //        var imagePath = Path.Combine(_hostEnvironment.WebRootPath, "images", image.ImageName);
+        //        if (System.IO.File.Exists(imagePath))
+        //            System.IO.File.Delete(imagePath);
+        //        if (image == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        return View(image);
+        //    }
+
+        //    // GET: Images/Create
+        //    public IActionResult Create()
+        //    {
+        //        return View();
+        //    }
 
         // POST: Images/Create
         [HttpPost]

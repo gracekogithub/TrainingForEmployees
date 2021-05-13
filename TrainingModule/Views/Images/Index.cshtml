@@ -39,6 +39,13 @@
             </tr>
         }
     </tbody>
+    <form method="post" enctype="multipart/form-data" asp-controller="Images" asp-action="Index">
+        <span>Select File:</span>
+        <input type="file" name="postedFiles" multiple />
+        <input type="submit" value="Upload" />
+        <br />
+        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+    </form>
 </table>
 <h4>Feature training video: hematology</h4>
 <iframe width="560" height="315" src="https://www.youtube.com/embed/bNlnYvjhxAU" title="YouTube video player" frameborder="0"
