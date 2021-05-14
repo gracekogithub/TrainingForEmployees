@@ -22,15 +22,18 @@ namespace TrainingModule.Controllers
         }
 
 
-        public IActionResult Index(int? value, Employee employees)
+        public IActionResult Index()
         {
-            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var managerSignIn = _context.Managers.Where(cu => cu.IdentityUserId == currentUserId).SingleOrDefault();
-            if (managerSignIn == null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var manager = _context.Managers.Where(c => c.IdentityUserId == userId).ToList();
+            if (manager.Count == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
-            return View();
+            else
+            {
+                return View(manager);
+            }
         }
         public IActionResult Details(int id)
         {
