@@ -1,160 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using TrainingModule.Data;
 using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class ManagersController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
+        private ApplicationDbContext _context;
         public ManagersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Managers
-        public async Task<IActionResult> Index()
+
+        public IActionResult Index(int? value, Employee employees)
         {
-            var applicationDbContext = _context.Managers.Include(m => m.IdentityUser);
-            return View(await applicationDbContext.ToListAsync());
+            var currentUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var managerSignIn = _context.Managers.Where(cu => cu.IdentityUserId == currentUserId).SingleOrDefault();
+            if (managerSignIn == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+            return View();
+        }
+        public IActionResult Details(int id)
+        {
+
+            var customer = _context.Employees.SingleOrDefault(c => c.EmployeeId == id);
+            return View(customer);
         }
 
-        // GET: Managers/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var manager = await _context.Managers
-                .Include(m => m.IdentityUser)
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
-            {
-                return NotFound();
-            }
-
-            return View(manager);
-        }
-
-        // GET: Managers/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
-        // POST: Managers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ManagerId,ManagerFirstName,ManagerLastName,IdentityUserId")] Manager manager)
+        public IActionResult Create(Manager manager)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(manager);
-                await _context.SaveChangesAsync();
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                manager.IdentityUserId = userId;
+                _context.Managers.Add(manager);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", manager.IdentityUserId);
-            return View(manager);
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View();
+            }
+            //ViewBag.Products = new SelectList(product.Name, "Name", "Name");
         }
 
-        // GET: Managers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var manager = await _context.Managers.FindAsync(id);
-            if (manager == null)
-            {
-                return NotFound();
-            }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", manager.IdentityUserId);
+            var manager = _context.Managers.Where(e => e.ManagerId == id).FirstOrDefault();
             return View(manager);
         }
-
-        // POST: Managers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ManagerId,ManagerFirstName,ManagerLastName,IdentityUserId")] Manager manager)
+        public IActionResult Edit(int id, Manager manager)
         {
-            if (id != manager.ManagerId)
+            try
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(manager);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ManagerExists(manager.ManagerId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                manager.IdentityUserId = userId;
+                _context.Managers.Update(manager);
+                _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", manager.IdentityUserId);
-            return View(manager);
-        }
-
-        // GET: Managers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
+            catch
             {
-                return NotFound();
+                Console.WriteLine("Error");
+                return View();
             }
 
-            var manager = await _context.Managers
-                .Include(m => m.IdentityUser)
-                .FirstOrDefaultAsync(m => m.ManagerId == id);
-            if (manager == null)
-            {
-                return NotFound();
-            }
-
-            return View(manager);
         }
-
-        // POST: Managers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult Delete(int id)
         {
-            var manager = await _context.Managers.FindAsync(id);
-            _context.Managers.Remove(manager);
-            await _context.SaveChangesAsync();
+            var data = _context.Managers.FirstOrDefault(o => o.ManagerId == id);
+            _context.Managers.Remove(data);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ManagerExists(int id)
-        {
-            return _context.Managers.Any(e => e.ManagerId == id);
-        }
     }
 }
