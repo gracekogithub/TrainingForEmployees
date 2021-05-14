@@ -44,8 +44,8 @@
                 @Html.DisplayFor(modelItem => item.IdentityUser.Id)
             </td>*@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.SuggestionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.SuggestionId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.SuggestionId">Edit</a> |<br/>
+                <a asp-action="Details" asp-route-id="@item.SuggestionId">Details</a> |<br/>
                 <a asp-action="Delete" asp-route-id="@item.SuggestionId">Delete</a>
             </td>
         </tr>

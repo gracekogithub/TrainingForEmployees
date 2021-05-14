@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
 {
+    [Authorize(Roles = "Employee, Manager")]
     public class SuggestionsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +21,7 @@ namespace TrainingModule.Controllers
             _context = context;
         }
 
-        // GET: Suggestions
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Suggestion.Include(s => s.IdentityUser);
@@ -141,7 +143,7 @@ namespace TrainingModule.Controllers
             return View(suggestion);
         }
 
-        // POST: Suggestions/Delete/5
+        [Authorize(Roles = "Manager")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using TrainingModule.Models;
 
 namespace TrainingModule.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class UpdatesController : Controller
     {
         private ApplicationDbContext _context;
@@ -17,6 +19,7 @@ namespace TrainingModule.Controllers
         {
             _context = context;
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             List<Update> update = _context.Updates.ToList();
