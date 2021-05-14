@@ -18,9 +18,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.ManagerLastName)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Extension)
+            </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.IdentityUser)
-            </th>*@
+            @Html.DisplayNameFor(model => model.IdentityUser)
+        </th>*@
             <th></th>
         </tr>
     </thead>
@@ -33,12 +36,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.ManagerLastName)
             </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Extension)
+            </td>
             @*<td>
-                @Html.DisplayFor(modelItem => item.IdentityUser.Id)
-            </td>*@
+            @Html.DisplayFor(modelItem => item.IdentityUser.Id)
+        </td>*@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ManagerId">Edit</a> |
-               
+
                 <a asp-action="Delete" asp-route-id="@item.ManagerId">Delete</a>
             </td>
         </tr>

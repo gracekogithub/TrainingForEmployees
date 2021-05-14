@@ -16,7 +16,8 @@ namespace TrainingModule.Models
         public string ManagerFirstName { get; set; }
         [Display(Name = "Last Name")]
         public string ManagerLastName { get; set; }
-
+        [Display(Name = "Extension Number")]
+        public string Extension { get; set; }
 
 
         [ForeignKey("IdentityUser")]

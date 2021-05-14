@@ -23,6 +23,7 @@ namespace TrainingModule.Data
         public virtual DbSet<Reviewer> Reviewers { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Training> Trainings { get; set; }
+        public virtual DbSet<Birthday> Birthdays { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

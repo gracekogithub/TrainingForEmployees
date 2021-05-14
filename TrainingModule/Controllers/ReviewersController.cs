@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -84,7 +85,7 @@ namespace TrainingModule.Controllers
 
             return View(reviewer);
         }
-
+        [Authorize(Roles = "Manager")]
         public IActionResult Delete(int id)
         {
             var review = _context.Reviewers.FirstOrDefault(u => u.ReviewerId == id);
