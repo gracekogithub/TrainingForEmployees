@@ -156,5 +156,6 @@ namespace TrainingModule.Controllers
         {
             return _context.Suggestion.Any(e => e.SuggestionId == id);
         }
+
     }
 }

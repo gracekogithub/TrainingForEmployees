@@ -1,6 +1,6 @@
 ﻿@model FileHelper
 @{
-    Layout = null;
+    ViewData["Title"] = "Index";
 } 
 
 <form asp-controller="FileHelper" asp-action="Index" method="post" enctype="multipart/form-data">
@@ -16,7 +16,7 @@
         <thead>
 
             <tr>
-                <th>SL</th>
+                <th>Number</th>
                 <th>PDF Name</th>
                 <th>Display Type</th>
 
